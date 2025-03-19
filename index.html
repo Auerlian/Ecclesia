@@ -21,7 +21,7 @@
       background: #f4f7fc;
       color: #333;
       min-height: 100vh;
-      padding-bottom: 80px; /* extra room for bottom nav */
+      padding-bottom: 80px; /* room for bottom nav */
     }
     h1, h2, h3 {
       color: #1a1a1a;
@@ -53,7 +53,7 @@
       z-index: 150;
     }
 
-    /* ---------- Main Container & Views ---------- */
+    /* ---------- Main Views ---------- */
     .view {
       display: none;
       padding: 20px;
@@ -69,58 +69,8 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    /* ---------- Bottom Navigation ---------- */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
-      background: #fff;
-      border-top: 1px solid #e0e0e0;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 200;
-    }
-    .bottom-nav button {
-      background: none;
-      border: none;
-      color: #777;
-      font-size: 0.95rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-    }
-    .bottom-nav button.active {
-      color: #1976d2;
-      font-weight: 700;
-    }
-    .bottom-nav button svg {
-      width: 28px;
-      height: 28px;
-      margin-bottom: 4px;
-    }
-
-    /* ---------- Button Styling ---------- */
-    .btn {
-      display: inline-block;
-      padding: 14px 28px;
-      background: #1976d2;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-      font-size: 1rem;
-      margin-top: 10px;
-    }
-    .btn:hover {
-      background: #115293;
-    }
-
-    /* ---------- Election Card ---------- */
+    /* ---------- Election App Styles ---------- */
+    /* Election Card */
     .election-block {
       background: #fff;
       border-radius: 10px;
@@ -138,8 +88,7 @@
       font-size: 1.15rem;
       margin-bottom: 10px;
     }
-
-    /* ---------- Position Block ---------- */
+    /* Position Block */
     .position-block {
       margin-bottom: 20px;
     }
@@ -156,8 +105,7 @@
       justify-content: center;
       margin-top: 20px;
     }
-
-    /* ---------- Candidate Cards ---------- */
+    /* Candidate Cards */
     .candidates {
       display: flex;
       flex-wrap: wrap;
@@ -203,8 +151,7 @@
       font-size: 0.75rem;
       font-weight: bold;
     }
-
-    /* ---------- Candidate Panel Overlay ---------- */
+    /* Candidate Panel Overlay */
     .overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -226,6 +173,7 @@
       width: 100%;
       position: relative;
       box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      text-align: center;
     }
     .candidate-panel img {
       width: 100%;
@@ -254,8 +202,7 @@
       font-size: 1rem;
       color: #1976d2;
     }
-
-    /* ---------- Reward Panel ---------- */
+    /* Reward Panel Overlay */
     .reward-panel {
       background: #fff;
       padding: 25px;
@@ -263,8 +210,7 @@
       text-align: center;
       box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     }
-
-    /* ---------- Read-only Summary ---------- */
+    /* Read-only Summary */
     .summary-block {
       background: #fff;
       border: 1px solid #ddd;
@@ -277,47 +223,161 @@
       color: #1976d2;
       font-size: 1.05rem;
     }
-
-    /* ---------- Profile View ---------- */
-    #profileView .profile-info {
+    /* ---------- Button Styling ---------- */
+    .btn {
+      display: inline-block;
+      padding: 14px 28px;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+    .btn:hover {
+      background: #115293;
+    }
+    /* ---------- Bottom Navigation ---------- */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: #fff;
+      border-top: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 200;
+    }
+    .bottom-nav button {
+      background: none;
+      border: none;
+      color: #777;
+      font-size: 0.95rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      cursor: pointer;
     }
-    #profileView .profile-info .avatar-wrapper {
+    .bottom-nav button.active {
+      color: #1976d2;
+      font-weight: 700;
+    }
+    .bottom-nav button svg {
+      width: 28px;
+      height: 28px;
+      margin-bottom: 4px;
+    }
+
+    /* ---------- Profile Section Styles ---------- */
+    .profile-container {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    /* Ecco Section */
+    .ecco-section {
+      text-align: center;
+      margin-bottom: 30px;
       position: relative;
-      width: 140px;
-      height: 140px;
+    }
+    .ecco-section .ecco-svg {
+      max-width: 200px;
+      margin: 0 auto;
+      transition: background 0.5s ease;
+    }
+    .ecco-section.trip-mode .ecco-svg {
+      background: #ffe0b2;
+      border-radius: 50%;
+      padding: 10px;
+    }
+    /* Rewards Section */
+    .reward-section {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    /* Reward Popup Overlay */
+    .reward-popup-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .reward-popup-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+    .reward-popup {
+      background: #fff;
+      border-radius: 10px;
+      padding: 25px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      position: relative;
+      transform: translateY(-20px);
+      transition: transform 0.4s ease;
+    }
+    .reward-popup-overlay.active .reward-popup {
+      transform: translateY(0);
+    }
+    .reward-popup .close-popup {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .fun-fact-display {
+      margin-top: 15px;
+      font-style: italic;
+      color: #444;
+    }
+    /* Unlocks Menu */
+    .unlocks-menu {
+      border-top: 1px solid #ddd;
+      padding-top: 20px;
+    }
+    .menu-tabs {
+      display: flex;
+      justify-content: space-around;
       margin-bottom: 15px;
     }
-    #profileView .profile-info .avatar-wrapper .avatar-bg {
-      background: linear-gradient(135deg, #1976d2, #42a5f5);
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      position: absolute;
-      top: 0;
-      left: 0;
+    .menu-tabs button {
+      flex: 1;
+      padding: 10px;
+      background: #e0e0e0;
+      border: none;
+      border-radius: 5px;
+      margin: 0 5px;
+      cursor: pointer;
+      transition: background 0.3s;
     }
-    #profileView .profile-info img {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      border: 4px solid #fff;
-      object-fit: cover;
-      position: relative;
-      z-index: 2;
+    .menu-tabs button.active {
+      background: #1976d2;
+      color: #fff;
+      font-weight: bold;
     }
-    #profileView .profile-info h2 {
-      margin: 10px 0 5px;
-      font-size: 1.2rem;
-    }
-    #profileView .profile-info p {
-      color: #666;
-      font-size: 0.95rem;
+    .menu-content .tab-content {
+      display: none;
       text-align: center;
-      max-width: 280px;
+      padding: 10px;
+    }
+    .menu-content .tab-content.active {
+      display: block;
     }
 
     /* ---------- Responsive Adjustments ---------- */
@@ -343,7 +403,7 @@
     Mobile Election App
   </div>
 
-  <!-- Voting / Election Views -->
+  <!-- Election / Voting Views -->
   <div id="electionView" class="view active">
     <div class="container">
       <h2>Available Elections</h2>
@@ -379,39 +439,80 @@
 
   <!-- Profile View -->
   <div id="profileView" class="view">
-    <div class="container profile-info">
-      <div class="avatar-wrapper">
-        <div class="avatar-bg"></div>
-        <img src="https://via.placeholder.com/140" alt="User Avatar">
+    <div class="profile-container">
+      <!-- 1. Ecco Section -->
+      <div class="ecco-section" id="eccoSection">
+        <div class="ecco-svg">
+          <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+           width="300.000000pt" height="575.000000pt" viewBox="0 0 300.000000 575.000000"
+           preserveAspectRatio="xMidYMid meet">
+            <g transform="translate(0.000000,575.000000) scale(0.100000,-0.100000)"
+              fill="#1976d2" stroke="none">
+              <path d="M1394 5368 c-130 -11 -249 -43 -369 -102 -306 -150 -502 -406 -571
+              -746 -27 -134 -16 -343 25 -479 37 -121 64 -177 136 -286 60 -90 139 -174 232
+              -247 l62 -49 -23 -52 c-13 -29 -52 -113 -86 -187 -91 -199 -173 -398 -221
+              -540 -41 -118 -43 -131 -43 -240 0 -187 58 -346 173 -472 34 -36 61 -74 61
+              -83 0 -10 -25 -144 -55 -299 -94 -483 -224 -1194 -231 -1261 -11 -110 24 -121
+              160 -51 122 62 234 146 351 261 113 112 270 315 337 436 23 43 65 113 92 156
+              l49 78 27 -33 c14 -17 53 -78 85 -135 188 -331 382 -531 708 -733 114 -71 151
+              -84 174 -61 15 15 15 25 4 99 -22 147 -90 533 -161 903 -37 198 -78 422 -91
+              497 l-23 136 78 117 c93 137 131 229 147 354 16 116 3 205 -47 333 -32 83
+              -244 573 -311 720 -15 32 -25 59 -22 61 111 78 230 196 292 290 59 89 124 234
+              147 327 44 177 37 390 -17 565 -142 456 -595 763 -1069 723z m287 -187 c327
+              -85 564 -325 646 -657 23 -93 23 -285 0 -379 -63 -257 -213 -455 -439 -579
+              -144 -80 -294 -113 -466 -103 -127 8 -198 25 -309 77 -239 111 -401 300 -480
+              557 -23 78 -26 104 -26 233 0 116 4 160 21 221 95 347 367 591 727 650 76 12
+              241 2 326 -20z m-566 -1820 c129 -46 226 -63 360 -63 135 0 231 17 362 63 47
+              17 86 29 88 27 1 -2 50 -102 108 -223 57 -121 137 -286 176 -366 39 -80 78
+              -177 87 -215 22 -93 15 -245 -15 -334 -22 -65 -84 -170 -100 -170 -4 0 -16 51
+              -26 113 -24 148 -39 176 -98 177 -40 0 -63 -15 -75 -49 -15 -42 32 -310 253
+              -1456 67 -350 77 -406 71 -412 -7 -8 -170 116 -255 194 -136 123 -305 354
+              -386 527 -49 104 -105 258 -105 288 0 30 -53 78 -88 78 -48 0 -68 -27 -107
+              -145 -88 -269 -252 -537 -453 -742 -95 -97 -265 -233 -277 -222 -2 3 21 133
+              51 289 189 988 294 1550 294 1581 0 32 -44 69 -83 69 -58 0 -75 -30 -99 -174
+              -12 -69 -25 -126 -29 -126 -30 0 -110 161 -129 258 -20 99 -8 241 26 329 42
+              106 348 732 357 733 5 0 46 -13 92 -29z"/>
+            </g>
+          </svg>
+        </div>
       </div>
-      <h2>User123</h2>
-      <p>Welcome to your profile! Your rewards and activity details will appear here.</p>
+      <!-- 2. Rewards Section -->
+      <div class="reward-section">
+        <button id="claimRewardBtn" class="btn">Claim Reward</button>
+        <div id="rewardPopup" class="reward-popup-overlay">
+          <div class="reward-popup">
+            <button class="close-popup" onclick="closeRewardPopup()">×</button>
+            <div id="rewardContent">
+              <!-- Reward details injected here -->
+            </div>
+          </div>
+        </div>
+        <div id="funFactDisplay" class="fun-fact-display"></div>
+      </div>
+      <!-- 3. Unlocks Menu Section -->
+      <div class="unlocks-menu">
+        <h2>Your Unlocked Items</h2>
+        <div class="menu-tabs">
+          <button class="tab-btn active" onclick="showTab('funFacts', event)">Fun Facts</button>
+          <button class="tab-btn" onclick="showTab('accessories', event)">Accessories</button>
+          <button class="tab-btn" onclick="showTab('trips', event)">Trips</button>
+        </div>
+        <div class="menu-content">
+          <div id="tabFunFacts" class="tab-content active">
+            <p>No fun facts yet.</p>
+          </div>
+          <div id="tabAccessories" class="tab-content">
+            <p>No accessories unlocked.</p>
+          </div>
+          <div id="tabTrips" class="tab-content">
+            <p>No trips recorded.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Candidate Panel Overlay -->
-  <div id="candidateOverlay" class="overlay">
-    <div class="candidate-panel">
-      <button class="close-panel" onclick="closeCandidatePanel()">×</button>
-      <img id="candidateImage" src="" alt="Candidate Image">
-      <h2 id="candidateName"></h2>
-      <p><strong>Manifesto:</strong> <span id="candidateManifesto"></span></p>
-      <p><strong>AI Summary:</strong> <span id="candidateAISummary"></span></p>
-      <div class="social-links" id="candidateSocial"></div>
-      <button class="btn" onclick="voteForCandidate()">Vote for this Candidate</button>
-    </div>
-  </div>
-
-  <!-- Reward Panel Overlay -->
-  <div id="rewardOverlay" class="overlay">
-    <div class="reward-panel">
-      <h2>Congratulations!</h2>
-      <p>You earned a reward for voting on this position.</p>
-      <button class="btn" onclick="rewardConfirmed()">Okay</button>
-    </div>
-  </div>
-
-  <!-- Bottom Navigation Bar -->
+  <!-- Bottom Navigation -->
   <div class="bottom-nav">
     <button id="navVoting" class="active" onclick="showPrimaryView('electionView')">
       <svg viewBox="0 0 24 24" fill="currentColor">
@@ -428,7 +529,7 @@
   </div>
 
   <script>
-    /* ---------- Sample Data ---------- */
+    /* ---------- Election App Data & Functions ---------- */
     const elections = [
       {
         id: 1,
@@ -496,18 +597,16 @@
       // Additional elections can be added here...
     ];
 
-    /* ---------- Global State ---------- */
     let currentElection = null;
     let currentPositionIndex = 0;
     let selectedCandidate = null;
 
-    /* ---------- Initialization ---------- */
     document.addEventListener("DOMContentLoaded", () => {
       renderElectionList();
     });
 
-    /* ---------- Primary View Switcher ---------- */
     function showPrimaryView(viewId) {
+      // Hide subviews if switching to main voting view
       if (viewId === 'electionView') {
         showView('electionView');
       } else if (viewId === 'profileView') {
@@ -517,7 +616,11 @@
       document.getElementById("navProfile").classList.toggle("active", viewId === 'profileView');
     }
 
-    /* ---------- View Rendering Functions ---------- */
+    function showView(viewId) {
+      document.querySelectorAll(".view").forEach(view => view.classList.remove("active"));
+      document.getElementById(viewId).classList.add("active");
+    }
+
     function renderElectionList() {
       const electionList = document.getElementById("electionList");
       electionList.innerHTML = "";
@@ -562,7 +665,6 @@
           <a href="${position.moreInfoLink}" target="_blank">More Info</a>
         </div>
         <div class="candidates" id="candidatesContainer">
-          <!-- Candidate blocks go here -->
         </div>
         <div id="voteConfirmation" style="margin-top:15px;"></div>
       `;
@@ -586,7 +688,6 @@
       });
     }
 
-    /* ---------- Candidate Panel Functions ---------- */
     function openCandidatePanel(candidate) {
       selectedCandidate = candidate;
       document.getElementById("candidateImage").src = candidate.image;
@@ -624,7 +725,6 @@
       document.getElementById("rewardOverlay").classList.add("active");
     }
 
-    /* ---------- Reward Panel Confirmation ---------- */
     function rewardConfirmed() {
       document.getElementById("rewardOverlay").classList.remove("active");
       currentPositionIndex++;
@@ -632,7 +732,6 @@
       renderCurrentPosition();
     }
 
-    /* ---------- Skip or Exit Functions ---------- */
     function skipPosition() {
       currentElection.positions[currentPositionIndex].vote = "Skipped";
       currentPositionIndex++;
@@ -645,7 +744,6 @@
       showView("electionView");
     }
 
-    /* ---------- Review Summary ---------- */
     function renderReviewSummary() {
       const reviewContainer = document.getElementById("reviewSummary");
       reviewContainer.innerHTML = "";
@@ -671,10 +769,86 @@
       showView("electionView");
     }
 
-    /* ---------- Helper: Generic View Switcher ---------- */
-    function showView(viewId) {
-      document.querySelectorAll(".view").forEach(view => view.classList.remove("active"));
-      document.getElementById(viewId).classList.add("active");
+    /* ---------- Candidate Panel Overlay ---------- */
+    // Create the candidate overlay element
+    const candidateOverlayHTML = `
+      <div id="candidateOverlay" class="overlay">
+        <div class="candidate-panel">
+          <button class="close-panel" onclick="closeCandidatePanel()">×</button>
+          <img id="candidateImage" src="" alt="Candidate Image">
+          <h2 id="candidateName"></h2>
+          <p><strong>Manifesto:</strong> <span id="candidateManifesto"></span></p>
+          <p><strong>AI Summary:</strong> <span id="candidateAISummary"></span></p>
+          <div class="social-links" id="candidateSocial"></div>
+          <button class="btn" onclick="voteForCandidate()">Vote for this Candidate</button>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', candidateOverlayHTML);
+
+    /* ---------- Reward Popup for Election Votes ---------- */
+    const rewardOverlayHTML = `
+      <div id="rewardOverlay" class="overlay">
+        <div class="reward-panel">
+          <h2>Congratulations!</h2>
+          <p>You earned a reward for voting on this position.</p>
+          <button class="btn" onclick="rewardConfirmed()">Okay</button>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', rewardOverlayHTML);
+
+    /* ---------- Profile Section Functions ---------- */
+    // Simulated unlocked items storage
+    const unlocked = {
+      funFacts: [],
+      accessories: [],
+      trips: []
+    };
+
+    // Reward Types: 'accessory', 'funFact', 'trip'
+    function openRewardPopup() {
+      const popup = document.getElementById("rewardPopup");
+      popup.classList.add("active");
+      const rewards = ['accessory', 'funFact', 'trip'];
+      const rewardType = rewards[Math.floor(Math.random() * rewards.length)];
+      const rewardContent = document.getElementById("rewardContent");
+
+      if (rewardType === 'accessory') {
+        rewardContent.innerHTML = `<h3>New Accessory Unlocked!</h3>
+                                   <p>Your Ecco has been given a stylish hat.</p>`;
+        unlocked.accessories.push("Stylish Hat");
+      } else if (rewardType === 'funFact') {
+        rewardContent.innerHTML = `<h3>Fun Fact Unlocked!</h3>
+                                   <p>"Ecco loves spending time outdoors!"</p>`;
+        document.getElementById("funFactDisplay").innerText = "Fun Fact: Ecco loves spending time outdoors!";
+        unlocked.funFacts.push("Ecco loves spending time outdoors!");
+      } else if (rewardType === 'trip') {
+        rewardContent.innerHTML = `<h3>Ecco Went on a Trip!</h3>
+                                   <p>Background changed to a tropical paradise.</p>`;
+        document.getElementById("eccoSection").classList.add("trip-mode");
+        unlocked.trips.push("Tropical Paradise Trip");
+      }
+    }
+
+    function closeRewardPopup() {
+      document.getElementById("rewardPopup").classList.remove("active");
+    }
+
+    document.getElementById("claimRewardBtn").addEventListener("click", openRewardPopup);
+
+    // Tab switching for unlocks menu
+    function showTab(tabName, event) {
+      const tabs = document.querySelectorAll(".menu-content .tab-content");
+      tabs.forEach(tab => tab.classList.remove("active"));
+      document.getElementById("tab" + capitalize(tabName)).classList.add("active");
+      const tabBtns = document.querySelectorAll(".menu-tabs .tab-btn");
+      tabBtns.forEach(btn => btn.classList.remove("active"));
+      event.target.classList.add("active");
+    }
+
+    function capitalize(s) {
+      return s.charAt(0).toUpperCase() + s.slice(1);
     }
   </script>
 </body>
