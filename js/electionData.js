@@ -77,7 +77,7 @@ function getRandomElement(arr) {
    * Generates a single election object with 4–12 positions.
    */
   function generateElection(electionId) {
-    const institutions = ["University Student Council", "Local Town Council", "Regional Board"];
+    const institutions = ["UoB Student Council", "Debating Society", "Computer Science Society"];
     const randomInstitution = getRandomElement(institutions);
   
     // random positions 4–12
@@ -89,15 +89,17 @@ function getRandomElement(arr) {
       positions.push(generatePosition(positionId, i));
     }
   
-    const rewards = ["Free Coffee Voucher", "Discount Meal Coupon", "Free T-Shirt", "VIP Event Pass"];
-  
+    const rewards = ["Ecco Upgrades"];
+    const now = Date.now();
+    const randomOffset = Math.floor(Math.random() * 5) + 1; // 1–5 minutes
+    const endTime = new Date(now + randomOffset * 60_000);
+    
     return {
-      id: electionId,
-      institution: randomInstitution + " #" + electionId,
-      timeRemaining: Math.floor(Math.random() * 5) + " days " + Math.floor(Math.random() * 24) + " hrs",
-      positionsCount: positionsCount,
-      reward: getRandomElement(rewards),
-      positions: positions
+        id: electionId,
+        institution: randomInstitution + " #" + electionId,
+        endTime, // store it
+        positionsCount: positionsCount,
+        positions: positions
     };
   }
   
