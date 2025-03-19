@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ecclesia IEC Prototype</title>
+  <style>
+    /* ----- Basic Reset & Layout ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+    body {
+      background: #f9f9f9;
+      color: #333;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    nav {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    nav button {
+      background: #6200ea;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    nav button:hover {
+      background: #4b00b5;
+    }
+    section {
+      display: none; /* Hide by default; JavaScript will show the active section */
+      background: #fff;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    section.active {
+      display: block; /* Show the active section */
+    }
+    h2 {
+      margin-bottom: 10px;
+    }
+    .avatar-list {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+    .avatar {
+      text-align: center;
+    }
+    .avatar img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+    .avatar button {
+      background: #6200ea;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .avatar button:hover {
+      background: #4b00b5;
+    }
+    .info-block {
+      margin: 15px 0;
+      padding: 10px;
+      background: #f0f0f0;
+      border-radius: 4px;
+    }
+    .info-block p {
+      margin-bottom: 5px;
+    }
+    .hidden {
+      display: none;
+    }
+    /* Extra: just to visually separate gear items in Ecco page */
+    .gear-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .gear-item {
+      flex: 1 1 120px;
+      background: #e1e1e1;
+      border-radius: 4px;
+      padding: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Ecclesia IEC Prototype</h1>
+    <p>A simple single-page demo for the IEC pitch</p>
+  </header>
+
+  <nav>
+    <button onclick="showPage('votePage')">Vote</button>
+    <button onclick="showPage('eccoPage')">Profile / Ecco</button>
+  </nav>
+
+  <!-- VOTE SECTION -->
+  <section id="votePage" class="active">
+    <h2>Vote for an Avatar</h2>
+    <p>Select one of the avatars below to cast your vote. (Demo only!)</p>
+    <div class="avatar-list">
+      <!-- Avatar 1 -->
+      <div class="avatar">
+        <img src="https://via.placeholder.com/80" alt="Avatar 1">
+        <p>Avatar 1</p>
+        <button onclick="castVote('Avatar 1')">Vote</button>
+      </div>
+      <!-- Avatar 2 -->
+      <div class="avatar">
+        <img src="https://via.placeholder.com/80" alt="Avatar 2">
+        <p>Avatar 2</p>
+        <button onclick="castVote('Avatar 2')">Vote</button>
+      </div>
+      <!-- Avatar 3 -->
+      <div class="avatar">
+        <img src="https://via.placeholder.com/80" alt="Avatar 3">
+        <p>Avatar 3</p>
+        <button onclick="castVote('Avatar 3')">Vote</button>
+      </div>
+    </div>
+
+    <div id="voteResult" class="info-block hidden">
+      <p>Thank you for voting!</p>
+      <p id="votedFor"></p>
+    </div>
+
+    <hr style="margin: 20px 0;">
+
+    <h3>AI Summaries / Magic Info (Demo)</h3>
+    <p>Imagine this area shows an AI-generated summary or magic info for the selected avatar or overall vote results.</p>
+  </section>
+
+  <!-- PROFILE / ECCO SECTION -->
+  <section id="eccoPage">
+    <h2>Profile &amp; Ecco Page</h2>
+    <p>Here you could display the chosen avatar, user details, Ecco status, gear unlocks, and more.</p>
+    
+    <div class="info-block">
+      <h3>Current Avatar</h3>
+      <img src="https://via.placeholder.com/100" alt="User Avatar">
+      <p>Name: <strong>User123</strong></p>
+      <p>Interests / Fun Facts: <strong>Placeholder Info</strong></p>
+    </div>
+
+    <div class="info-block">
+      <h3>Unlocked Gear</h3>
+      <div class="gear-items">
+        <div class="gear-item">Hat</div>
+        <div class="gear-item">Ecco Patch</div>
+        <div class="gear-item">Background 1</div>
+        <div class="gear-item">Accessory X</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h3>ECCO Info</h3>
+      <p>Placeholder text for ECCO achievements, progress, or badges.</p>
+    </div>
+
+    <hr style="margin: 20px 0;">
+
+    <h3>AI Summaries / Magic Info (Demo)</h3>
+    <p>Imagine this area is a dynamic feed or generated content relevant to the user’s avatar or Ecco status.</p>
+  </section>
+
+  <script>
+    // Show/hide pages
+    function showPage(pageId) {
+      const pages = document.querySelectorAll('section');
+      pages.forEach(page => {
+        page.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    // Simulate casting a vote
+    function castVote(avatarName) {
+      const resultDiv = document.getElementById('voteResult');
+      const votedForText = document.getElementById('votedFor');
+      votedForText.textContent = "You voted for: " + avatarName;
+      resultDiv.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
