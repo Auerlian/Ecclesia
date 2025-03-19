@@ -166,7 +166,12 @@
     showView("electionView");
   }
 
-  // An array of all your Ecco image paths in the `images/eccos/` folder
+// ========== profile.js ==========
+
+// Access the global 'rewardCount' from voting.js
+// Make sure your <script src="js/voting.js"> is included before this file in HTML.
+
+// An array of your Ecco images:
 const eccoImages = [
     "images/eccos/ecco.png",
     "images/eccos/ecco_balloon.png",
@@ -177,22 +182,55 @@ const eccoImages = [
     "images/eccos/ecco_shopping.png"
   ];
   
-  // A helper to pick one randomly
-  function getRandomEccoImage() {
-    const randomIndex = Math.floor(Math.random() * eccoImages.length);
-    return eccoImages[randomIndex];
+  // Some silly Ecco fun facts:
+  const eccoFunFacts = [
+    "Ecco is terrified of medium-sized birds, but fine with very big or small ones!",
+    "Ecco once tried to run for mayor—no one was surprised.",
+    "Ecco’s favorite meal is pizza dipped in hot chocolate.",
+    "Ecco never forgets a face… especially if they gave him snacks.",
+    "Ecco believes Tuesday is the best day for napping."
+  ];
+  
+  // Helper to pick a random item from an array:
+  function getRandomItem(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
   }
   
-  // Attach to the claim_reward button
+  // Attach to the "Claim Reward" button in your HTML
   const claimRewardBtn = document.getElementById("claim_reward");
+  const eccoImgElem = document.getElementById("eccoImage");
+  
   if (claimRewardBtn) {
+    // Update initial button label to match current rewardCount
+    claimRewardBtn.textContent = rewardCount + " rewards Available";
+  
     claimRewardBtn.addEventListener("click", () => {
-      // 1) If you’re doing reward logic, you might update the reward count here
-      // 2) Now randomly change the Ecco image:
-      const eccoImgElem = document.getElementById("eccoImage");
-      if (eccoImgElem) {
-        eccoImgElem.src = getRandomEccoImage();
+      if (rewardCount <= 0) {
+        // If no rewards, do nothing (or show an alert)
+        alert("No rewards left to claim!");
+        return;
       }
+  
+      // Decrement the reward count
+      rewardCount--;
+  
+      // 1) Randomly decide whether to swap the image or show a fun fact
+      //    (e.g., 70% to change the image, 30% to show a fact)
+      if (Math.random() < 0.7) {
+        // Change Ecco image
+        if (eccoImgElem) {
+          eccoImgElem.src = getRandomItem(eccoImages);
+        }
+      } else {
+        // Show a fun fact alert
+        alert(getRandomItem(eccoFunFacts));
+      }
+  
+      // 2) Update the button label or any UI element to reflect new count
+      claimRewardBtn.textContent = rewardCount + " rewards Available";
+  
+      // 3) Just for fun, log or alert a “funny comment”
+      console.log("Haha, you used a reward! Current rewardCount:", rewardCount);
     });
   }
   

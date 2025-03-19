@@ -184,14 +184,3 @@ function backToElections() {
   selectedCandidate = null;
   showView("electionView");
 }
-
-// EXAMPLE: REWARD REDEMPTION
-function redeemReward() {
-  if (rewardCount > 0) {
-    rewardCount--;
-    alert("Reward redeemed! You now have " + rewardCount + " reward(s) left.");
-    // Update any UI element that shows the current reward count, if desired
-  } else {
-    alert("No rewards to redeem!");
-  }
-}
