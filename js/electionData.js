@@ -91,8 +91,8 @@ function getRandomElement(arr) {
   
     const rewards = ["Ecco Upgrades"];
     const now = Date.now();
-    const randomOffset = Math.floor(Math.random() * 5) + 1; // 1–5 minutes
-    const endTime = new Date(now + randomOffset * 60_000);
+    const randomOffset = Math.floor(Math.random() * 50) + 1; // 1–5 minutes
+    const endTime = new Date(now + randomOffset * 600_000);
     
     return {
         id: electionId,

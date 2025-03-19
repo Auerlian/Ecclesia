@@ -1,70 +1,11 @@
 // ========== voting.js ==========
+// We rely on electionData.js for generateRandomElections().
 
-// Example random elections. We'll include a random endTime about 2h from now.
-function generateRandomElections(count) {
-    const elections = [];
-    for (let i = 1; i <= count; i++) {
-      const now = Date.now();
-      const twoHours = 2 * 60 * 60 * 1000; // 2 hours in ms
-      const randomEndTime = now + twoHours + Math.floor(Math.random() * 30000); // 0-30s variance
-  
-      elections.push({
-        id: i,
-        institution: `Institution ${i}`,
-        positionsCount: 3, // for example
-        locked: false,     // new: not locked initially
-        endTime: randomEndTime, // store ms since epoch
-  
-        // Example positions data
-        positions: [
-          {
-            title: "President",
-            info: "Vote for the next President.",
-            moreInfoLink: "#",
-            candidates: [
-              // ... sample
-              { name: "Alice", image: "images/alice.png", manifesto: "Alice's manifesto", aiSummary: "AI summary for Alice", social: {}, bestChoice: false },
-              { name: "Bob",   image: "images/bob.png",   manifesto: "Bob's manifesto",   aiSummary: "AI summary for Bob",   social: {}, bestChoice: true },
-            ]
-          },
-          {
-            title: "Secretary",
-            info: "Vote for the Secretary.",
-            moreInfoLink: "#",
-            candidates: [
-              { name: "Charlie", image: "images/charlie.png", manifesto: "", aiSummary: "", social: {}, bestChoice: false },
-              { name: "Dana",    image: "images/dana.png",    manifesto: "", aiSummary: "", social: {}, bestChoice: false },
-            ]
-          },
-          {
-            title: "Treasurer",
-            info: "Vote for the Treasurer.",
-            moreInfoLink: "#",
-            candidates: [
-              { name: "Eve",   image: "images/eve.png",   manifesto: "", aiSummary: "", social: {}, bestChoice: false },
-              { name: "Frank", image: "images/frank.png", manifesto: "", aiSummary: "", social: {}, bestChoice: false },
-            ]
-          }
-        ]
-      });
-    }
-    return elections;
-  }
-  
-  const elections = generateRandomElections(3);
-  
-  // ----------------------------------------------------
-  // Global state for voting
-  // ----------------------------------------------------
-  let currentElection = null;
-  let currentPositionIndex = 0;
-  let selectedCandidate = null;
-  let rewardCount = 0; // We'll increment after each vote
-  
-  /**
-   * If random data sets multiple "bestChoice", keep only the first for each position.
-   */
-  function fixStarCandidate(position) {
+/**
+ * If random data sets multiple "bestChoice" on the same position,
+ * this function ensures only the first candidate remains marked as bestChoice.
+ */
+function fixStarCandidate(position) {
     let foundStar = false;
     position.candidates.forEach(c => {
       if (c.bestChoice) {
@@ -77,7 +18,32 @@ function generateRandomElections(count) {
     });
   }
   
-  // 1) Render the election list (with placeholders for live countdown)
+  // ----------------------------------------------------
+  // Generate and initialize elections
+  // ----------------------------------------------------
+  const elections = generateRandomElections(2);
+  
+  // We'll add a custom `locked = false` property to each election (not in your generator).
+  // This tracks whether a user has "confirmed" their votes for that election.
+  elections.forEach(e => {
+    e.locked = false; 
+    // Optionally fix star candidates for each position:
+    e.positions.forEach(pos => fixStarCandidate(pos));
+  });
+  
+  // Global state for voting
+  let currentElection = null;
+  let currentPositionIndex = 0;
+  let selectedCandidate = null;
+  let rewardCount = 0; // We increment this after each vote
+  
+  // ----------------------------------------------------
+  // Core Rendering Logic
+  // ----------------------------------------------------
+  
+  /**
+   * Render the list of elections.
+   */
   function renderElectionList() {
     const electionList = document.getElementById("electionList");
     if (!electionList) return;
@@ -85,14 +51,13 @@ function generateRandomElections(count) {
     electionList.innerHTML = "";
   
     elections.forEach(election => {
-      // Ensure only 1 star candidate per position
-      election.positions.forEach(pos => fixStarCandidate(pos));
-  
+      // Build a clickable block
       const block = document.createElement("div");
       block.className = "election-block";
       block.id = `election-block-${election.id}`;
       block.onclick = () => startElection(election.id);
   
+      // We'll display a countdown in <span id="countdown-X">
       block.innerHTML = `
         <h2>${election.institution}</h2>
         <p><strong>Ends In:</strong> <span id="countdown-${election.id}"></span></p>
@@ -102,33 +67,41 @@ function generateRandomElections(count) {
     });
   }
   
-  // 2) Start an election
+  /**
+   * Start an election. If it's locked, go straight to a read-only review.
+   */
   function startElection(electionId) {
     currentElection = elections.find(e => e.id === electionId);
+    if (!currentElection) return;
+  
     selectedCandidate = null;
   
-    // If the election is locked, skip directly to the read-only review
+    // If the election is already locked, jump to read-only review
     if (currentElection.locked) {
       showView("reviewView");
-      renderReviewSummary(true);  // pass a flag that it's locked
+      renderReviewSummary(true); // read-only
       return;
     }
   
-    // Otherwise, let the user pick positions
+    // Otherwise, let them vote
     currentPositionIndex = 0;
-    document.getElementById("positionElectionTitle").textContent =
-      currentElection.institution;
+    const titleElem = document.getElementById("positionElectionTitle");
+    if (titleElem) {
+      titleElem.textContent = currentElection.institution;
+    }
   
     showView("positionView");
     renderCurrentPosition();
   }
   
-  // 3) Show the current position
+  /**
+   * Render the current position. If we've done them all, go to review.
+   */
   function renderCurrentPosition() {
     const posContainer = document.getElementById("positionBlock");
     if (!posContainer) return;
   
-    // If we've gone through all positions, show summary
+    // If we've gone through all positions, show review
     if (currentPositionIndex >= currentElection.positions.length) {
       showView("reviewView");
       renderReviewSummary(false); // not locked yet
@@ -141,7 +114,7 @@ function generateRandomElections(count) {
     const totalPositions = currentElection.positions.length;
     const currentPosNumber = currentPositionIndex + 1;
   
-    // Build a top nav with "Back" + "Next" and a "Close" (✕)
+    // Top nav bar with back/next/close
     const navBar = `
       <div class="position-nav-top">
         <div style="display:flex; gap:10px;">
@@ -171,21 +144,26 @@ function generateRandomElections(count) {
   
     posContainer.appendChild(posBlock);
   
+    // Now render the candidates
     renderCandidates(position.candidates);
   }
   
-  // 3a) Next position
+  /**
+   * Move to the next position.
+   */
   function nextPosition() {
     currentPositionIndex++;
     if (currentPositionIndex >= currentElection.positions.length) {
       showView("reviewView");
-      renderReviewSummary(false); // not locked
+      renderReviewSummary(false);
     } else {
       renderCurrentPosition();
     }
   }
   
-  // 3b) Previous position
+  /**
+   * Move back to the previous position (if any).
+   */
   function previousPosition() {
     if (currentPositionIndex > 0) {
       currentPositionIndex--;
@@ -195,7 +173,9 @@ function generateRandomElections(count) {
     }
   }
   
-  // 4) Render candidates
+  /**
+   * Render the candidates for the current position.
+   */
   function renderCandidates(candidates) {
     const container = document.getElementById("candidatesContainer");
     if (!container) return;
@@ -205,6 +185,7 @@ function generateRandomElections(count) {
       const candidateDiv = document.createElement("div");
       candidateDiv.className = "candidate-block";
       candidateDiv.onclick = () => openCandidatePanel(candidate);
+  
       candidateDiv.innerHTML = `
         <img src="${candidate.image}" alt="${candidate.name}">
         <p>${candidate.name}</p>
@@ -214,18 +195,25 @@ function generateRandomElections(count) {
     });
   }
   
-  // 5) Open candidate panel
+  // ----------------------------------------------------
+  // Candidate Panel Overlay
+  // ----------------------------------------------------
+  
   function openCandidatePanel(candidate) {
     selectedCandidate = candidate;
   
     // Fill overlay
-    document.getElementById("candidateImage").src = candidate.image;
-    document.getElementById("candidateName").textContent = candidate.name;
-    document.getElementById("candidateManifesto").textContent = candidate.manifesto;
-    document.getElementById("candidateAISummary").textContent = candidate.aiSummary;
-  
-    // Social links
+    const candidateImageElem = document.getElementById("candidateImage");
+    const candidateNameElem = document.getElementById("candidateName");
+    const candidateManifestoElem = document.getElementById("candidateManifesto");
+    const candidateAISummaryElem = document.getElementById("candidateAISummary");
     const socialDiv = document.getElementById("candidateSocial");
+  
+    if (candidateImageElem)   candidateImageElem.src = candidate.image;
+    if (candidateNameElem)    candidateNameElem.textContent = candidate.name;
+    if (candidateManifestoElem)   candidateManifestoElem.textContent = candidate.manifesto;
+    if (candidateAISummaryElem)   candidateAISummaryElem.textContent = candidate.aiSummary;
+    
     if (socialDiv) {
       socialDiv.innerHTML = "";
       for (const [platform, link] of Object.entries(candidate.social)) {
@@ -237,58 +225,67 @@ function generateRandomElections(count) {
       }
     }
   
-    document.getElementById("candidateOverlay").classList.add("active");
+    // Show overlay
+    const candidateOverlay = document.getElementById("candidateOverlay");
+    if (candidateOverlay) {
+      candidateOverlay.classList.add("active");
+    }
   }
   
-  // Close candidate overlay
   function closeCandidatePanel() {
-    document.getElementById("candidateOverlay").classList.remove("active");
+    const candidateOverlay = document.getElementById("candidateOverlay");
+    if (candidateOverlay) {
+      candidateOverlay.classList.remove("active");
+    }
     selectedCandidate = null;
   }
   
-  // 6) Immediately vote => increment reward => show reward overlay
+  /**
+   * Vote for the selected candidate => immediate reward => next position.
+   */
   function voteForCandidate() {
     if (!currentElection) return;
   
+    // Mark the vote
     const position = currentElection.positions[currentPositionIndex];
     position.vote = selectedCandidate;
   
-    // Close the candidate panel
     closeCandidatePanel();
   
-    // Immediately increment the reward
+    // Increment reward
     rewardCount++;
-  
-    // Update the reward button & badge in Profile
     updateRewardDisplays();
   
     // Animate the reward overlay
     const rewardPanel = document.querySelector(".reward-panel");
     if (rewardPanel) {
-      // Restart the "celebratePop" animation
       rewardPanel.classList.remove("animate");
-      void rewardPanel.offsetWidth; // trick to reflow
+      void rewardPanel.offsetWidth; // reflow trick
       rewardPanel.classList.add("animate");
     }
   
-    // Show the overlay
-    document.getElementById("rewardOverlay").classList.add("active");
+    // Show reward overlay
+    const rewardOverlay = document.getElementById("rewardOverlay");
+    if (rewardOverlay) {
+      rewardOverlay.classList.add("active");
+    }
   }
   
-  // 6a) After user sees the overlay, proceed
   function rewardConfirmed() {
-    document.getElementById("rewardOverlay").classList.remove("active");
+    const rewardOverlay = document.getElementById("rewardOverlay");
+    if (rewardOverlay) {
+      rewardOverlay.classList.remove("active");
+    }
     nextPosition();
   }
   
-  // 7) Exit election
-  function exitElection() {
-    alert("Exiting election. Your progress has been saved.");
-    showView("electionView");
-  }
+  // ----------------------------------------------------
+  // Election Review
+  // ----------------------------------------------------
   
-  // 8) Show summary
-  //    locked param: if true => read-only summary (no back/cancel/confirm)
+  /**
+   * Render the review summary. If locked=true => read-only (no Back/Cancel/Confirm).
+   */
   function renderReviewSummary(locked) {
     const reviewContainer = document.getElementById("reviewSummary");
     if (!reviewContainer) return;
@@ -308,61 +305,70 @@ function generateRandomElections(count) {
       reviewContainer.appendChild(summary);
     });
   
-    // If locked => only show "Return to Elections"
+    // If locked => show only "Back to Elections" button
     if (locked) {
       const finishBtn = document.createElement("button");
       finishBtn.className = "btn";
       finishBtn.textContent = "Back to Elections";
       finishBtn.onclick = backToElections;
       reviewContainer.appendChild(finishBtn);
-      return; // no other buttons
+      return;
     }
   
-    // Otherwise, show the 3-button approach (Back, Cancel, Confirm)
+    // Otherwise, show the 3-button approach
     const btnContainer = document.createElement("div");
     btnContainer.style.marginTop = "20px";
   
-    // 8a) Back
+    // Back => last position
     const backBtn = document.createElement("button");
     backBtn.className = "btn";
     backBtn.textContent = "Back";
     backBtn.onclick = () => {
-      // go to the last position
+      // Jump to the last position
       currentPositionIndex = currentElection.positions.length - 1;
       showView("positionView");
       renderCurrentPosition();
     };
     btnContainer.appendChild(backBtn);
   
-    // 8b) Cancel
+    // Cancel => back to election list
     const cancelBtn = document.createElement("button");
     cancelBtn.className = "btn";
-    cancelBtn.textContent = "Cancel";
     cancelBtn.style.marginLeft = "10px";
+    cancelBtn.textContent = "Cancel";
     cancelBtn.onclick = backToElections;
     btnContainer.appendChild(cancelBtn);
   
-    // 8c) Confirm
+    // Confirm => lock election
     const confirmBtn = document.createElement("button");
     confirmBtn.className = "btn";
-    confirmBtn.textContent = "Confirm (Lock Votes)";
     confirmBtn.style.marginLeft = "10px";
+    confirmBtn.textContent = "Confirm (Lock Votes)";
     confirmBtn.onclick = confirmElection;
     btnContainer.appendChild(confirmBtn);
   
     reviewContainer.appendChild(btnContainer);
   }
   
-  // 8d) Confirm the election (lock it so no more editing)
+  /**
+   * Confirm => lock the current election so it can't be edited again.
+   */
   function confirmElection() {
     if (!currentElection) return;
     currentElection.locked = true;
-    // Return to the main elections list
     alert("Your votes are locked. You can no longer edit this election.");
     backToElections();
   }
   
-  // 9) Back to main
+  // ----------------------------------------------------
+  // Navigation Helpers
+  // ----------------------------------------------------
+  
+  function exitElection() {
+    alert("Exiting election. Your progress has been saved.");
+    showView("electionView");
+  }
+  
   function backToElections() {
     currentElection = null;
     currentPositionIndex = 0;
@@ -370,18 +376,49 @@ function generateRandomElections(count) {
     showView("electionView");
   }
   
-  // 10) Live countdown: every second, update each election's countdown
+  /**
+   * Show/hide different "view" sections by ID
+   */
+  function showView(viewId) {
+    const views = document.querySelectorAll(".view");
+    views.forEach(v => v.classList.remove("active"));
+  
+    const target = document.getElementById(viewId);
+    if (target) {
+      target.classList.add("active");
+    }
+  }
+  
+  // If you have bottom navigation that toggles active buttons:
+  function showPrimaryView(viewId) {
+    document.getElementById("navVoting")?.classList.remove("active");
+    document.getElementById("navProfile")?.classList.remove("active");
+  
+    if (viewId === "profileView") {
+      document.getElementById("navProfile")?.classList.add("active");
+    } else {
+      document.getElementById("navVoting")?.classList.add("active");
+    }
+    showView(viewId);
+  }
+  
+  // ----------------------------------------------------
+  // Live Countdown (updates each second)
+  // ----------------------------------------------------
+  
+  /**
+   * Update the "Ends In:" countdown for each election.
+   */
   function updateCountdowns() {
     const now = Date.now();
-    elections.forEach(e => {
-      const countdownEl = document.getElementById(`countdown-${e.id}`);
+    elections.forEach(election => {
+      const countdownEl = document.getElementById(`countdown-${election.id}`);
       if (!countdownEl) return;
   
-      const diff = e.endTime - now;
+      const diff = election.endTime.getTime() - now;
       if (diff <= 0) {
         countdownEl.textContent = "Ended";
       } else {
-        // Convert diff ms -> HH:MM:SS
         const totalSec = Math.floor(diff / 1000);
         const hours = Math.floor(totalSec / 3600);
         const mins = Math.floor((totalSec % 3600) / 60);
@@ -394,15 +431,21 @@ function generateRandomElections(count) {
     });
   }
   
-  // Helper: update both the "claim_reward" button text and the profile badge
+  // ----------------------------------------------------
+  // Reward Display / Profile Badge
+  // ----------------------------------------------------
+  
+  /**
+   * Update both the "Claim Reward" button text and the profile badge 
+   * to reflect the current rewardCount.
+   */
   function updateRewardDisplays() {
-    // 1) The "Claim Reward" button
+    // "Claim Reward" button
     const rewardBtn = document.getElementById("claim_reward");
     if (rewardBtn) {
       rewardBtn.textContent = rewardCount + " rewards Available";
     }
-  
-    // 2) The badge on the Profile nav button
+    // Badge on the Profile nav button
     const badge = document.getElementById("profileBadge");
     if (badge) {
       if (rewardCount > 0) {
@@ -415,12 +458,15 @@ function generateRandomElections(count) {
     }
   }
   
-  // On page load, show the election list, start the countdown
+  // ----------------------------------------------------
+  // Initialization on page load
+  // ----------------------------------------------------
   document.addEventListener("DOMContentLoaded", () => {
+    // 1) Render the election list
     renderElectionList();
+    // 2) Show the initial reward counts
     updateRewardDisplays();
-  
-    // Update every second
+    // 3) Start the countdown timer
     setInterval(updateCountdowns, 1000);
   });
   

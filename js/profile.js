@@ -23,7 +23,7 @@ const eccoImages = [
     "Ecco believes Tuesday is the best day for napping."
   ];
   
-  unction getRandomItem(arr) {
+  function getRandomItem(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
   }
   
