@@ -154,4 +154,11 @@
 
   .ecco-wrapper svg{
     height: 300px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .profile-text{
+    text-align: center;
+    padding: 0 50px;
   }
