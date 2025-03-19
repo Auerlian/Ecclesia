@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Election Prototype Demo - Monotone Style</title>
-  <!-- Optional: Google Font for styling -->
+  <title>Mobile Election Prototype</title>
+  <!-- Google Fonts: Montserrat -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link 
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" 
@@ -17,37 +17,70 @@
       background: #f2f2f2;
       color: #333;
       min-height: 100vh;
-      padding: 20px;
+      padding-bottom: 70px; /* room for bottom nav */
     }
     h1, h2, h3 { color: #333; }
-    a { color: #2a9df4; text-decoration: none; cursor: pointer; }
+    a { color: #2a9df4; text-decoration: none; }
     a:hover { text-decoration: underline; }
 
-    /* ---------- Container Layout ---------- */
+    /* ---------- Mobile Container & Views ---------- */
     .view {
       display: none;
+      padding: 15px;
     }
     .active { display: block; }
     .container {
-      max-width: 900px;
-      margin: 0 auto 20px;
-      background: #ffffff;
+      background: #fff;
       border-radius: 6px;
-      padding: 20px;
+      padding: 15px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+    }
+
+    /* ---------- Bottom Navigation ---------- */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #fff;
+      border-top: 1px solid #ccc;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 100;
+    }
+    .bottom-nav button {
+      background: none;
+      border: none;
+      color: #666;
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+    .bottom-nav button.active {
+      color: #2a9df4;
+    }
+    .bottom-nav button svg {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 3px;
     }
 
     /* ---------- Button Styling ---------- */
     .btn {
       display: inline-block;
       padding: 10px 20px;
-      margin: 5px 0;
       background: #2a9df4;
       color: #fff;
       border: none;
       border-radius: 4px;
       cursor: pointer;
       transition: background 0.3s;
+      margin: 5px 0;
     }
     .btn:hover { background: #1c7cd6; }
 
@@ -55,21 +88,20 @@
     .election-block {
       border: 1px solid #ccc;
       border-radius: 4px;
-      padding: 15px;
-      margin-bottom: 15px;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
+      padding: 12px;
+      margin-bottom: 10px;
       background: #fafafa;
+      transition: background 0.2s, transform 0.2s;
     }
     .election-block:hover { 
       transform: translateY(-2px); 
       background: #f0f0f0;
     }
-    .election-block h2 { margin-bottom: 10px; font-weight: 700; }
+    .election-block h2 { font-weight: 700; margin-bottom: 8px; }
 
     /* ---------- Position Block ---------- */
     .position-block {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
     .position-info { margin-bottom: 10px; }
     .position-nav { margin-top: 10px; }
@@ -78,28 +110,28 @@
     .candidates {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
+      gap: 10px;
     }
     .candidate-block {
       border: 1px solid #ddd;
-      padding: 10px;
+      padding: 8px;
       border-radius: 4px;
-      width: 140px;
+      width: 120px;
       text-align: center;
       position: relative;
       cursor: pointer;
-      transition: box-shadow 0.2s, transform 0.2s;
       background: #fff;
+      transition: box-shadow 0.2s, transform 0.2s;
     }
     .candidate-block:hover { 
       box-shadow: 0 3px 8px rgba(0,0,0,0.1);
       transform: translateY(-2px);
     }
     .candidate-block img {
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
-      margin-bottom: 8px;
+      margin-bottom: 5px;
       border: 1px solid #ccc;
     }
     .best-choice {
@@ -109,8 +141,8 @@
       background: #2a9df4;
       color: #fff;
       border-radius: 50%;
-      padding: 3px 6px;
-      font-size: 0.8rem;
+      padding: 2px 5px;
+      font-size: 0.7rem;
       font-weight: bold;
     }
 
@@ -122,24 +154,25 @@
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 100;
+      z-index: 200;
+      padding: 15px;
     }
     .overlay.active { display: flex; }
     .candidate-panel {
       background: #fff;
       border-radius: 4px;
-      padding: 20px;
+      padding: 15px;
       max-width: 600px;
-      width: 90%;
+      width: 100%;
       position: relative;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     .candidate-panel img {
       width: 100%;
-      max-height: 300px;
+      max-height: 200px;
       object-fit: cover;
       border-radius: 4px;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
     .close-panel {
       position: absolute;
@@ -159,7 +192,7 @@
     /* ---------- Reward Panel ---------- */
     .reward-panel {
       background: #fff;
-      padding: 20px;
+      padding: 15px;
       border-radius: 4px;
       text-align: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -169,40 +202,82 @@
     .summary-block {
       border: 1px solid #ddd;
       border-radius: 4px;
-      padding: 15px;
+      padding: 10px;
       background: #f7f7f7;
       margin-bottom: 10px;
     }
 
-    /* ---------- Position & Navigation ---------- */
-    .position-nav .btn {
-      margin-right: 10px;
+    /* ---------- Profile View ---------- */
+    #profileView .profile-info {
+      text-align: center;
+    }
+    #profileView .profile-info img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+    #profileView .profile-info h2 {
+      margin-bottom: 5px;
+    }
+    #profileView .profile-info p {
+      color: #666;
+    }
+
+    /* ---------- Responsive Adjustments ---------- */
+    @media (max-width: 480px) {
+      .candidate-block { width: 100px; }
+      .bottom-nav button { font-size: 0.8rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Election View: List all elections -->
-  <div id="electionView" class="view active container">
-    <h1>Available Elections</h1>
-    <div id="electionList">
-      <!-- Election blocks will be injected here -->
+  <!-- Voting / Election Views -->
+  <div id="electionView" class="view active">
+    <div class="container">
+      <h1>Available Elections</h1>
+      <div id="electionList">
+        <!-- Election blocks injected here -->
+      </div>
     </div>
   </div>
 
-  <!-- Position View: One position at a time -->
-  <div id="positionView" class="view container">
-    <h1 id="positionElectionTitle"></h1>
-    <div id="positionBlock">
-      <!-- Position block info will be injected here -->
-    </div>
-    <div class="position-nav">
-      <button class="btn" id="skipBtn" onclick="skipPosition()">Skip Position</button>
-      <button class="btn" id="exitElectionBtn" onclick="exitElection()">Exit Election</button>
+  <div id="positionView" class="view">
+    <div class="container">
+      <h1 id="positionElectionTitle"></h1>
+      <div id="positionBlock">
+        <!-- Position block info injected here -->
+      </div>
+      <div class="position-nav">
+        <button class="btn" id="skipBtn" onclick="skipPosition()">Skip Position</button>
+        <button class="btn" id="exitElectionBtn" onclick="exitElection()">Exit Election</button>
+      </div>
     </div>
   </div>
 
-  <!-- Candidate Panel: Full-screen overlay -->
+  <div id="reviewView" class="view">
+    <div class="container">
+      <h1>Your Election Choices</h1>
+      <div id="reviewSummary">
+        <!-- Summary injected here -->
+      </div>
+      <button class="btn" onclick="backToElections()">Back to Elections</button>
+    </div>
+  </div>
+
+  <!-- Profile View -->
+  <div id="profileView" class="view">
+    <div class="container profile-info">
+      <img src="https://via.placeholder.com/100" alt="User Avatar">
+      <h2>User123</h2>
+      <p>Welcome to your profile! Rewards earned from elections will be displayed here.</p>
+      <p>(This is a demo profile page.)</p>
+    </div>
+  </div>
+
+  <!-- Candidate Panel Overlay -->
   <div id="candidateOverlay" class="overlay">
     <div class="candidate-panel">
       <button class="close-panel" onclick="closeCandidatePanel()">×</button>
@@ -215,7 +290,7 @@
     </div>
   </div>
 
-  <!-- Reward Panel: Modal for reward -->
+  <!-- Reward Panel Overlay -->
   <div id="rewardOverlay" class="overlay">
     <div class="reward-panel">
       <h2>Congratulations!</h2>
@@ -224,13 +299,22 @@
     </div>
   </div>
 
-  <!-- Review Summary: Read-only summary of choices (when election complete) -->
-  <div id="reviewView" class="view container">
-    <h1>Your Election Choices</h1>
-    <div id="reviewSummary">
-      <!-- Summary of positions and choices -->
-    </div>
-    <button class="btn" onclick="backToElections()">Back to Elections</button>
+  <!-- Bottom Navigation Bar -->
+  <div class="bottom-nav">
+    <button id="navVoting" class="active" onclick="showPrimaryView('electionView')">
+      <!-- Simple SVG icon for Voting -->
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14l4-4h12c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+      </svg>
+      Voting
+    </button>
+    <button id="navProfile" onclick="showPrimaryView('profileView')">
+      <!-- Simple SVG icon for Profile -->
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+      </svg>
+      Profile
+    </button>
   </div>
 
   <script>
@@ -298,7 +382,7 @@
             vote: null
           }
         ]
-      },
+      }
       // Additional elections can be added here...
     ];
 
@@ -312,6 +396,20 @@
       renderElectionList();
     });
 
+    /* ----- Primary View Switcher ----- */
+    function showPrimaryView(viewId) {
+      // Hide any subviews (position, review) if switching to main voting view
+      if (viewId === 'electionView') {
+        // Ensure the election view is active and set the navigation buttons
+        showView('electionView');
+      } else if (viewId === 'profileView') {
+        showView('profileView');
+      }
+      // Update bottom nav active state
+      document.getElementById("navVoting").classList.toggle("active", viewId === 'electionView');
+      document.getElementById("navProfile").classList.toggle("active", viewId === 'profileView');
+    }
+
     /* ----- View Rendering Functions ----- */
     function renderElectionList() {
       const electionList = document.getElementById("electionList");
@@ -322,7 +420,7 @@
         block.onclick = () => startElection(election.id);
         block.innerHTML = `
           <h2>${election.institution}</h2>
-          <p><strong>Time Remaining:</strong> ${election.timeRemaining}</p>
+          <p><strong>Time:</strong> ${election.timeRemaining}</p>
           <p><strong>Positions:</strong> ${election.positionsCount}</p>
           <p><strong>Reward:</strong> ${election.reward}</p>
         `;
@@ -343,13 +441,11 @@
       const posContainer = document.getElementById("positionBlock");
       posContainer.innerHTML = "";
       if (currentPositionIndex >= currentElection.positions.length) {
-        // All positions complete → review summary
         renderReviewSummary();
         showView("reviewView");
         return;
       }
       const position = currentElection.positions[currentPositionIndex];
-      // Build position block
       const posBlock = document.createElement("div");
       posBlock.className = "position-block";
       posBlock.innerHTML = `
@@ -359,7 +455,7 @@
           <a href="${position.moreInfoLink}" target="_blank">More Info</a>
         </div>
         <div class="candidates" id="candidatesContainer">
-          <!-- Candidate blocks injected here -->
+          <!-- Candidate blocks go here -->
         </div>
         <div id="voteConfirmation" style="margin-top:10px;"></div>
       `;
@@ -460,7 +556,7 @@
       showView("electionView");
     }
 
-    /* ----- Helper: View Switcher ----- */
+    /* ----- Helper: Generic View Switcher ----- */
     function showView(viewId) {
       document.querySelectorAll(".view").forEach(view => view.classList.remove("active"));
       document.getElementById(viewId).classList.add("active");
