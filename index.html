@@ -342,14 +342,15 @@
 
   <!-- Top Header -->
   <div class="app-header">
-    <h1>Ecclesia IEC</h1>
+    <h1>Ecclesia IEC Prototype</h1>
   </div>
 
   <!-- Voting / Election Views -->
   <div id="electionView" class="view active">
     <div class="container">
-      <h2>Vote Now</h2>
-      <p>Select an election to get started:</p>
+      <h2>1 Current open election</h2>
+      <p>Select below to get started</p>
+      <div class="spacer"></div>
       <div id="electionList">
         <!-- Election blocks injected here -->
       </div>
@@ -434,72 +435,7 @@
 
   <script>
     /* ----- Sample Data ----- */
-    const elections = [
-      {
-        id: 1,
-        institution: "University Student Council",
-        timeRemaining: "2 days 5 hrs",
-        positionsCount: 2,
-        reward: "Free Coffee Voucher",
-        positions: [
-          {
-            id: 101,
-            title: "President",
-            info: "The President oversees all council operations.",
-            moreInfoLink: "#",
-            candidates: [
-              {
-                id: 1001,
-                name: "Alice Johnson",
-                image: "https://via.placeholder.com/150?text=Alice",
-                manifesto: "Better campus facilities and student support.",
-                aiSummary: "Focus on improved infrastructure and welfare.",
-                social: { twitter: "#", linkedin: "#" },
-                bestChoice: true
-              },
-              {
-                id: 1002,
-                name: "Bob Smith",
-                image: "https://via.placeholder.com/150?text=Bob",
-                manifesto: "Transparency and student empowerment.",
-                aiSummary: "Emphasizes accountability and active participation.",
-                social: { twitter: "#", linkedin: "#" },
-                bestChoice: false
-              }
-            ],
-            vote: null
-          },
-          {
-            id: 102,
-            title: "Vice President",
-            info: "Supports the President and manages specific projects.",
-            moreInfoLink: "#",
-            candidates: [
-              {
-                id: 1003,
-                name: "Carol White",
-                image: "https://via.placeholder.com/150?text=Carol",
-                manifesto: "Innovative projects for community engagement.",
-                aiSummary: "Strong focus on community and innovation.",
-                social: { twitter: "#", linkedin: "#" },
-                bestChoice: false
-              },
-              {
-                id: 1004,
-                name: "David Lee",
-                image: "https://via.placeholder.com/150?text=David",
-                manifesto: "Commitment to student representation.",
-                aiSummary: "Highlights dedication and representation.",
-                social: { twitter: "#", linkedin: "#" },
-                bestChoice: true
-              }
-            ],
-            vote: null
-          }
-        ]
-      }
-      // Additional elections can be added here...
-    ];
+    const elections = generateElectionData();
 
     /* ----- Global State ----- */
     let currentElection = null;
@@ -683,6 +619,130 @@
       document.querySelectorAll(".view").forEach(view => view.classList.remove("active"));
       document.getElementById(viewId).classList.add("active");
     }
+
+    /**
+ * Returns an array of 8 election objects.
+ * Each election has:
+ *   - an 'id'
+ *   - an 'institution'
+ *   - a 'timeRemaining' string
+ *   - a 'positionsCount' (set to 1 here)
+ *   - a 'reward'
+ *   - a 'positions' array with 1 position that has 8 candidates
+ */
+function generateElectionData() {
+  const elections = [];
+  for (let i = 1; i <= 8; i++) {
+    elections.push({
+      id: i,
+      institution: `Institution #${i}`,
+      timeRemaining: getRandomTimeRemaining(),
+      positionsCount: 1,
+      reward: getRandomReward(),
+      positions: [
+        {
+          id: i * 100, // arbitrary ID for the position
+          title: `Position for Election #${i}`,
+          info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          moreInfoLink: "#",
+          candidates: generateCandidates(8),
+          vote: null
+        }
+      ]
+    });
+  }
+  return elections;
+}
+
+/**
+ * Helper function that returns an array of candidate objects.
+ * Each candidate has:
+ *   - an 'id'
+ *   - a 'name'
+ *   - an 'image'
+ *   - a 'manifesto'
+ *   - an 'aiSummary'
+ *   - a 'social' object
+ *   - a 'bestChoice' boolean (randomly assigned)
+ */
+function generateCandidates(count) {
+  const candidates = [];
+  for (let i = 1; i <= count; i++) {
+    candidates.push({
+      id: Math.floor(Math.random() * 100000),
+      name: getRandomName(),
+      image: getRandomPlaceholderImage(),
+      manifesto: getRandomManifesto(),
+      aiSummary: getRandomAISummary(),
+      social: {
+        twitter: "https://twitter.com/example",
+        linkedin: "https://www.linkedin.com/in/example"
+      },
+      bestChoice: Math.random() < 0.3 // ~30% chance to be bestChoice
+    });
+  }
+  return candidates;
+}
+
+/* ---------- Random Data Generators ---------- */
+function getRandomName() {
+  const firstNames = ["Alice", "Bob", "Carol", "David", "Eve", "Frank", "Grace", "Hank", "Irene", "Jake"];
+  const lastNames = ["Johnson", "Smith", "White", "Lee", "Miller", "Brown", "Davis", "Wilson", "Garcia", "Martinez"];
+  const fName = firstNames[Math.floor(Math.random() * firstNames.length)];
+  const lName = lastNames[Math.floor(Math.random() * lastNames.length)];
+  return `${fName} ${lName}`;
+}
+
+function getRandomPlaceholderImage() {
+  // Just returns a placeholder with the candidate's name or "Candidate"
+  const randomText = Math.random() < 0.5 ? "Candidate" : "VoteMe";
+  return `https://via.placeholder.com/150?text=${encodeURIComponent(randomText)}`;
+}
+
+function getRandomManifesto() {
+  const lines = [
+    "I promise to improve community engagement and transparency.",
+    "My goal is to modernize facilities and enhance student experiences.",
+    "I will focus on inclusive policies and fair representation for all.",
+    "We need better funding and accountability in our system.",
+    "I'll bring fresh perspectives and innovative ideas to this role."
+  ];
+  return lines[Math.floor(Math.random() * lines.length)];
+}
+
+function getRandomAISummary() {
+  const lines = [
+    "Focuses on strong leadership and collaboration.",
+    "Emphasizes transparency and accountability.",
+    "Prioritizes community-driven initiatives.",
+    "Highlights the need for innovation in governance.",
+    "Supports equitable policies and resource allocation."
+  ];
+  return lines[Math.floor(Math.random() * lines.length)];
+}
+
+function getRandomTimeRemaining() {
+  // Creates a random time window like "X days Y hrs"
+  const days = Math.floor(Math.random() * 5) + 1; // 1 to 5 days
+  const hrs = Math.floor(Math.random() * 24);     // 0 to 23 hours
+  return `${days} day${days > 1 ? "s" : ""} ${hrs} hr${hrs !== 1 ? "s" : ""}`;
+}
+
+function getRandomReward() {
+  const rewards = [
+    "Free Coffee Voucher",
+    "Discount at Campus Store",
+    "Bonus Points for Next Semester",
+    "VIP Event Access",
+    "Free Meal at Cafeteria",
+    "Swag Bag of Goodies",
+    "Priority Parking Pass",
+    "Extra Library Borrowing Privileges"
+  ];
+  return rewards[Math.floor(Math.random() * rewards.length)];
+}
+const myElections = generateElectionData();
+console.log(myElections);
   </script>
 </body>
 </html>
