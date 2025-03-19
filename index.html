@@ -34,12 +34,14 @@
   <!-- 2. Position View -->
   <div id="positionView" class="view">
     <div class="container">
+      <!-- 
+          We'll inject Skip / Exit at the top in the script itself (see voting.js).
+          So you can remove or comment out the bottom .position-nav if you like.
+      -->
       <h2 id="positionElectionTitle"></h2>
+      <!-- The .position-nav is no longer needed at bottom, 
+           but you could keep it hidden if you prefer. -->
       <div id="positionBlock"></div>
-      <div class="position-nav">
-        <button class="btn" id="skipBtn" onclick="skipPosition()">Skip</button>
-        <button class="btn" id="exitElectionBtn" onclick="exitElection()">Exit</button>
-      </div>
     </div>
   </div>
 
@@ -48,7 +50,8 @@
     <div class="container">
       <h2>Your Election Choices</h2>
       <div id="reviewSummary"></div>
-      <button class="btn" onclick="backToElections()">Back to Elections</button>
+      <!-- The final 'Confirm All Votes' button and 
+           'Back to Elections' are injected by voting.js -->
     </div>
   </div>
 
@@ -58,7 +61,7 @@
       <!-- Example Ecco Section -->
       <div class="ecco-section">
         <div class="ecco-wrapper">
-          <!-- Replace the SVG with this: -->
+          <!-- We replaced the SVG with an <img> for Ecco. -->
           <img 
             id="eccoImage" 
             src="images/eccos/ecco.png" 
@@ -70,9 +73,9 @@
         <div class="profile-text">
           <h1>James' Ecco</h1>
           <p>
-            every vote you'll get rewards which customise your Ecco, eventually 
+            Every vote you'll get rewards which customise your Ecco, eventually 
             they'll become just like you and even suggest who they think you'd 
-            like to vote for
+            like to vote for.
           </p>
         </div>
       
@@ -87,14 +90,17 @@
   <div class="bottom-nav">
     <button id="navVoting" class="active" onclick="showPrimaryView('electionView')">
       <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M19 3H5c-1.1 0-2 .9-2 2v14l4-4h12c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14l4-4h12
+                 c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
       </svg>
       Voting
     </button>
     <button id="navProfile" onclick="showPrimaryView('profileView')">
       <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2
-                 c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5
+                 -5 2.3-5 5 2.3 5 5 5zm0 2
+                 c-3.3 0-10 1.7-10 5v3h20v-3
+                 c0-3.3-6.7-5-10-5z"/>
       </svg>
       Profile
     </button>
@@ -106,9 +112,18 @@
       <button class="close-panel" onclick="closeCandidatePanel()">×</button>
       <img id="candidateImage" src="" alt="Candidate Image">
       <h2 id="candidateName"></h2>
-      <p><strong>Manifesto:</strong> <span id="candidateManifesto"></span></p>
-      <p><strong>AI Summary:</strong> <span id="candidateAISummary"></span></p>
-      <div class="social-links" id="candidateSocial"></div>
+
+      <!-- More interesting layout; you can style in voting.css or a new css file: -->
+      <div class="candidate-details">
+        <p><strong>Manifesto:</strong></p>
+        <p id="candidateManifesto"></p>
+        
+        <p><strong>AI Summary:</strong></p>
+        <p id="candidateAISummary"></p>
+
+        <div class="social-links" id="candidateSocial"></div>
+      </div>
+
       <button class="btn" onclick="voteForCandidate()">Vote for this Candidate</button>
     </div>
   </div>
