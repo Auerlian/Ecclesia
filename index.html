@@ -2,205 +2,468 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Ecclesia IEC Prototype</title>
+  <title>Election Prototype Demo - Monotone Style</title>
+  <!-- Optional: Google Font for styling -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" 
+    rel="stylesheet"
+  >
   <style>
-    /* ----- Basic Reset & Layout ----- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: sans-serif;
-    }
+    /* ---------- Global Reset & Typography ---------- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: #f9f9f9;
+      font-family: 'Montserrat', sans-serif;
+      background: #f2f2f2;
       color: #333;
+      min-height: 100vh;
       padding: 20px;
     }
-    header {
-      text-align: center;
-      margin-bottom: 20px;
+    h1, h2, h3 { color: #333; }
+    a { color: #2a9df4; text-decoration: none; cursor: pointer; }
+    a:hover { text-decoration: underline; }
+
+    /* ---------- Container Layout ---------- */
+    .view {
+      display: none;
     }
-    nav {
-      text-align: center;
-      margin-bottom: 20px;
+    .active { display: block; }
+    .container {
+      max-width: 900px;
+      margin: 0 auto 20px;
+      background: #ffffff;
+      border-radius: 6px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    nav button {
-      background: #6200ea;
+
+    /* ---------- Button Styling ---------- */
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 5px 0;
+      background: #2a9df4;
       color: #fff;
       border: none;
-      padding: 10px 20px;
-      margin: 0 10px;
-      cursor: pointer;
       border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
     }
-    nav button:hover {
-      background: #4b00b5;
+    .btn:hover { background: #1c7cd6; }
+
+    /* ---------- Election Block ---------- */
+    .election-block {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      background: #fafafa;
     }
-    section {
-      display: none; /* Hide by default; JavaScript will show the active section */
-      background: #fff;
-      padding: 20px;
-      border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      max-width: 600px;
-      margin: 0 auto;
+    .election-block:hover { 
+      transform: translateY(-2px); 
+      background: #f0f0f0;
     }
-    section.active {
-      display: block; /* Show the active section */
+    .election-block h2 { margin-bottom: 10px; font-weight: 700; }
+
+    /* ---------- Position Block ---------- */
+    .position-block {
+      margin-bottom: 20px;
     }
-    h2 {
-      margin-bottom: 10px;
-    }
-    .avatar-list {
+    .position-info { margin-bottom: 10px; }
+    .position-nav { margin-top: 10px; }
+    
+    /* ---------- Candidate Blocks ---------- */
+    .candidates {
       display: flex;
-      justify-content: space-around;
-      margin-top: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
     }
-    .avatar {
+    .candidate-block {
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 4px;
+      width: 140px;
       text-align: center;
+      position: relative;
+      cursor: pointer;
+      transition: box-shadow 0.2s, transform 0.2s;
+      background: #fff;
     }
-    .avatar img {
+    .candidate-block:hover { 
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    .candidate-block img {
       width: 80px;
       height: 80px;
       border-radius: 50%;
+      margin-bottom: 8px;
+      border: 1px solid #ccc;
+    }
+    .best-choice {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: #2a9df4;
+      color: #fff;
+      border-radius: 50%;
+      padding: 3px 6px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    /* ---------- Candidate Panel (Overlay) ---------- */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .overlay.active { display: flex; }
+    .candidate-panel {
+      background: #fff;
+      border-radius: 4px;
+      padding: 20px;
+      max-width: 600px;
+      width: 90%;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .candidate-panel img {
+      width: 100%;
+      max-height: 300px;
       object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 15px;
+    }
+    .close-panel {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: #333;
+      cursor: pointer;
+    }
+    .social-links a {
+      margin-right: 10px;
+      font-size: 0.9rem;
+    }
+
+    /* ---------- Reward Panel ---------- */
+    .reward-panel {
+      background: #fff;
+      padding: 20px;
+      border-radius: 4px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* ---------- Read-only Summary ---------- */
+    .summary-block {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 15px;
+      background: #f7f7f7;
       margin-bottom: 10px;
     }
-    .avatar button {
-      background: #6200ea;
-      color: #fff;
-      border: none;
-      padding: 6px 10px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    .avatar button:hover {
-      background: #4b00b5;
-    }
-    .info-block {
-      margin: 15px 0;
-      padding: 10px;
-      background: #f0f0f0;
-      border-radius: 4px;
-    }
-    .info-block p {
-      margin-bottom: 5px;
-    }
-    .hidden {
-      display: none;
-    }
-    /* Extra: just to visually separate gear items in Ecco page */
-    .gear-items {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
-    }
-    .gear-item {
-      flex: 1 1 120px;
-      background: #e1e1e1;
-      border-radius: 4px;
-      padding: 10px;
-      text-align: center;
+
+    /* ---------- Position & Navigation ---------- */
+    .position-nav .btn {
+      margin-right: 10px;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Ecclesia IEC Prototype</h1>
-    <p>A simple single-page demo for the IEC pitch</p>
-  </header>
 
-  <nav>
-    <button onclick="showPage('votePage')">Vote</button>
-    <button onclick="showPage('eccoPage')">Profile / Ecco</button>
-  </nav>
-
-  <!-- VOTE SECTION -->
-  <section id="votePage" class="active">
-    <h2>Vote for an Avatar</h2>
-    <p>Select one of the avatars below to cast your vote. (Demo only!)</p>
-    <div class="avatar-list">
-      <!-- Avatar 1 -->
-      <div class="avatar">
-        <img src="https://via.placeholder.com/80" alt="Avatar 1">
-        <p>Avatar 1</p>
-        <button onclick="castVote('Avatar 1')">Vote</button>
-      </div>
-      <!-- Avatar 2 -->
-      <div class="avatar">
-        <img src="https://via.placeholder.com/80" alt="Avatar 2">
-        <p>Avatar 2</p>
-        <button onclick="castVote('Avatar 2')">Vote</button>
-      </div>
-      <!-- Avatar 3 -->
-      <div class="avatar">
-        <img src="https://via.placeholder.com/80" alt="Avatar 3">
-        <p>Avatar 3</p>
-        <button onclick="castVote('Avatar 3')">Vote</button>
-      </div>
+  <!-- Election View: List all elections -->
+  <div id="electionView" class="view active container">
+    <h1>Available Elections</h1>
+    <div id="electionList">
+      <!-- Election blocks will be injected here -->
     </div>
+  </div>
 
-    <div id="voteResult" class="info-block hidden">
-      <p>Thank you for voting!</p>
-      <p id="votedFor"></p>
+  <!-- Position View: One position at a time -->
+  <div id="positionView" class="view container">
+    <h1 id="positionElectionTitle"></h1>
+    <div id="positionBlock">
+      <!-- Position block info will be injected here -->
     </div>
-
-    <hr style="margin: 20px 0;">
-
-    <h3>AI Summaries / Magic Info (Demo)</h3>
-    <p>Imagine this area shows an AI-generated summary or magic info for the selected avatar or overall vote results.</p>
-  </section>
-
-  <!-- PROFILE / ECCO SECTION -->
-  <section id="eccoPage">
-    <h2>Profile &amp; Ecco Page</h2>
-    <p>Here you could display the chosen avatar, user details, Ecco status, gear unlocks, and more.</p>
-    
-    <div class="info-block">
-      <h3>Current Avatar</h3>
-      <img src="https://via.placeholder.com/100" alt="User Avatar">
-      <p>Name: <strong>User123</strong></p>
-      <p>Interests / Fun Facts: <strong>Placeholder Info</strong></p>
+    <div class="position-nav">
+      <button class="btn" id="skipBtn" onclick="skipPosition()">Skip Position</button>
+      <button class="btn" id="exitElectionBtn" onclick="exitElection()">Exit Election</button>
     </div>
+  </div>
 
-    <div class="info-block">
-      <h3>Unlocked Gear</h3>
-      <div class="gear-items">
-        <div class="gear-item">Hat</div>
-        <div class="gear-item">Ecco Patch</div>
-        <div class="gear-item">Background 1</div>
-        <div class="gear-item">Accessory X</div>
-      </div>
+  <!-- Candidate Panel: Full-screen overlay -->
+  <div id="candidateOverlay" class="overlay">
+    <div class="candidate-panel">
+      <button class="close-panel" onclick="closeCandidatePanel()">×</button>
+      <img id="candidateImage" src="" alt="Candidate Image">
+      <h2 id="candidateName"></h2>
+      <p><strong>Manifesto:</strong> <span id="candidateManifesto"></span></p>
+      <p><strong>AI Summary:</strong> <span id="candidateAISummary"></span></p>
+      <div class="social-links" id="candidateSocial"></div>
+      <button class="btn" onclick="voteForCandidate()">Vote for this Candidate</button>
     </div>
+  </div>
 
-    <div class="info-block">
-      <h3>ECCO Info</h3>
-      <p>Placeholder text for ECCO achievements, progress, or badges.</p>
+  <!-- Reward Panel: Modal for reward -->
+  <div id="rewardOverlay" class="overlay">
+    <div class="reward-panel">
+      <h2>Congratulations!</h2>
+      <p>You earned a reward for voting on this position.</p>
+      <button class="btn" onclick="rewardConfirmed()">Okay</button>
     </div>
+  </div>
 
-    <hr style="margin: 20px 0;">
-
-    <h3>AI Summaries / Magic Info (Demo)</h3>
-    <p>Imagine this area is a dynamic feed or generated content relevant to the user’s avatar or Ecco status.</p>
-  </section>
+  <!-- Review Summary: Read-only summary of choices (when election complete) -->
+  <div id="reviewView" class="view container">
+    <h1>Your Election Choices</h1>
+    <div id="reviewSummary">
+      <!-- Summary of positions and choices -->
+    </div>
+    <button class="btn" onclick="backToElections()">Back to Elections</button>
+  </div>
 
   <script>
-    // Show/hide pages
-    function showPage(pageId) {
-      const pages = document.querySelectorAll('section');
-      pages.forEach(page => {
-        page.classList.remove('active');
+    /* ----- Sample Data ----- */
+    const elections = [
+      {
+        id: 1,
+        institution: "University Student Council",
+        timeRemaining: "2 days 5 hrs",
+        positionsCount: 2,
+        reward: "Free Coffee Voucher",
+        positions: [
+          {
+            id: 101,
+            title: "President",
+            info: "The President oversees all council operations.",
+            moreInfoLink: "#",
+            candidates: [
+              {
+                id: 1001,
+                name: "Alice Johnson",
+                image: "https://via.placeholder.com/150?text=Alice",
+                manifesto: "Better campus facilities and student support.",
+                aiSummary: "Focus on improved infrastructure and welfare.",
+                social: { twitter: "#", linkedin: "#" },
+                bestChoice: true
+              },
+              {
+                id: 1002,
+                name: "Bob Smith",
+                image: "https://via.placeholder.com/150?text=Bob",
+                manifesto: "Transparency and student empowerment.",
+                aiSummary: "Emphasizes accountability and active participation.",
+                social: { twitter: "#", linkedin: "#" },
+                bestChoice: false
+              }
+            ],
+            vote: null
+          },
+          {
+            id: 102,
+            title: "Vice President",
+            info: "Supports the President and manages specific projects.",
+            moreInfoLink: "#",
+            candidates: [
+              {
+                id: 1003,
+                name: "Carol White",
+                image: "https://via.placeholder.com/150?text=Carol",
+                manifesto: "Innovative projects for community engagement.",
+                aiSummary: "Strong focus on community and innovation.",
+                social: { twitter: "#", linkedin: "#" },
+                bestChoice: false
+              },
+              {
+                id: 1004,
+                name: "David Lee",
+                image: "https://via.placeholder.com/150?text=David",
+                manifesto: "Commitment to student representation.",
+                aiSummary: "Highlights dedication and representation.",
+                social: { twitter: "#", linkedin: "#" },
+                bestChoice: true
+              }
+            ],
+            vote: null
+          }
+        ]
+      },
+      // Additional elections can be added here...
+    ];
+
+    /* ----- Global State ----- */
+    let currentElection = null;
+    let currentPositionIndex = 0;
+    let selectedCandidate = null;
+
+    /* ----- Initialization ----- */
+    document.addEventListener("DOMContentLoaded", () => {
+      renderElectionList();
+    });
+
+    /* ----- View Rendering Functions ----- */
+    function renderElectionList() {
+      const electionList = document.getElementById("electionList");
+      electionList.innerHTML = "";
+      elections.forEach(election => {
+        const block = document.createElement("div");
+        block.className = "election-block";
+        block.onclick = () => startElection(election.id);
+        block.innerHTML = `
+          <h2>${election.institution}</h2>
+          <p><strong>Time Remaining:</strong> ${election.timeRemaining}</p>
+          <p><strong>Positions:</strong> ${election.positionsCount}</p>
+          <p><strong>Reward:</strong> ${election.reward}</p>
+        `;
+        electionList.appendChild(block);
       });
-      document.getElementById(pageId).classList.add('active');
     }
 
-    // Simulate casting a vote
-    function castVote(avatarName) {
-      const resultDiv = document.getElementById('voteResult');
-      const votedForText = document.getElementById('votedFor');
-      votedForText.textContent = "You voted for: " + avatarName;
-      resultDiv.classList.remove('hidden');
+    function startElection(electionId) {
+      currentElection = elections.find(e => e.id === electionId);
+      currentPositionIndex = 0;
+      selectedCandidate = null;
+      document.getElementById("positionElectionTitle").textContent = currentElection.institution;
+      showView("positionView");
+      renderCurrentPosition();
+    }
+
+    function renderCurrentPosition() {
+      const posContainer = document.getElementById("positionBlock");
+      posContainer.innerHTML = "";
+      if (currentPositionIndex >= currentElection.positions.length) {
+        // All positions complete → review summary
+        renderReviewSummary();
+        showView("reviewView");
+        return;
+      }
+      const position = currentElection.positions[currentPositionIndex];
+      // Build position block
+      const posBlock = document.createElement("div");
+      posBlock.className = "position-block";
+      posBlock.innerHTML = `
+        <div class="position-info">
+          <h2>Position: ${position.title}</h2>
+          <p>${position.info}</p>
+          <a href="${position.moreInfoLink}" target="_blank">More Info</a>
+        </div>
+        <div class="candidates" id="candidatesContainer">
+          <!-- Candidate blocks injected here -->
+        </div>
+        <div id="voteConfirmation" style="margin-top:10px;"></div>
+      `;
+      posContainer.appendChild(posBlock);
+      renderCandidates(position.candidates);
+    }
+
+    function renderCandidates(candidates) {
+      const container = document.getElementById("candidatesContainer");
+      container.innerHTML = "";
+      candidates.forEach(candidate => {
+        const candidateDiv = document.createElement("div");
+        candidateDiv.className = "candidate-block";
+        candidateDiv.onclick = () => openCandidatePanel(candidate);
+        candidateDiv.innerHTML = `
+          <img src="${candidate.image}" alt="${candidate.name}">
+          <p>${candidate.name}</p>
+          ${candidate.bestChoice ? '<div class="best-choice">★</div>' : ""}
+        `;
+        container.appendChild(candidateDiv);
+      });
+    }
+
+    /* ----- Candidate Panel Functions ----- */
+    function openCandidatePanel(candidate) {
+      selectedCandidate = candidate;
+      document.getElementById("candidateImage").src = candidate.image;
+      document.getElementById("candidateName").textContent = candidate.name;
+      document.getElementById("candidateManifesto").textContent = candidate.manifesto;
+      document.getElementById("candidateAISummary").textContent = candidate.aiSummary;
+      const socialDiv = document.getElementById("candidateSocial");
+      socialDiv.innerHTML = "";
+      for (const [platform, link] of Object.entries(candidate.social)) {
+        const anchor = document.createElement("a");
+        anchor.href = link;
+        anchor.textContent = platform;
+        anchor.target = "_blank";
+        socialDiv.appendChild(anchor);
+      }
+      document.getElementById("candidateOverlay").classList.add("active");
+    }
+
+    function closeCandidatePanel() {
+      document.getElementById("candidateOverlay").classList.remove("active");
+    }
+
+    function voteForCandidate() {
+      const position = currentElection.positions[currentPositionIndex];
+      position.vote = selectedCandidate;
+      closeCandidatePanel();
+      const voteConf = document.getElementById("voteConfirmation");
+      voteConf.innerHTML = `<p>You selected <strong>${selectedCandidate.name}</strong> for ${position.title}.</p>
+                            <button class="btn" onclick="confirmVote()">Confirm Vote</button>`;
+    }
+
+    function confirmVote() {
+      document.getElementById("rewardOverlay").classList.add("active");
+    }
+
+    /* ----- Reward Panel Confirmation ----- */
+    function rewardConfirmed() {
+      document.getElementById("rewardOverlay").classList.remove("active");
+      currentPositionIndex++;
+      selectedCandidate = null;
+      renderCurrentPosition();
+    }
+
+    /* ----- Skip or Exit Functions ----- */
+    function skipPosition() {
+      currentElection.positions[currentPositionIndex].vote = "Skipped";
+      currentPositionIndex++;
+      selectedCandidate = null;
+      renderCurrentPosition();
+    }
+
+    function exitElection() {
+      alert("Exiting election. Your progress has been saved.");
+      showView("electionView");
+    }
+
+    /* ----- Review Summary ----- */
+    function renderReviewSummary() {
+      const reviewContainer = document.getElementById("reviewSummary");
+      reviewContainer.innerHTML = "";
+      currentElection.positions.forEach(position => {
+        const summary = document.createElement("div");
+        summary.className = "summary-block";
+        summary.innerHTML = `<h3>${position.title}</h3>
+                             <p><strong>Your Choice:</strong> ${position.vote ? (typeof position.vote === "object" ? position.vote.name : position.vote) : "No vote"}</p>`;
+        reviewContainer.appendChild(summary);
+      });
+    }
+
+    function backToElections() {
+      currentElection = null;
+      currentPositionIndex = 0;
+      selectedCandidate = null;
+      showView("electionView");
+    }
+
+    /* ----- Helper: View Switcher ----- */
+    function showView(viewId) {
+      document.querySelectorAll(".view").forEach(view => view.classList.remove("active"));
+      document.getElementById(viewId).classList.add("active");
     }
   </script>
 </body>
