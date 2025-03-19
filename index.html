@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Mobile Election Prototype</title>
+  <title>Ecclesia IEC Prototype</title>
   <!-- Google Fonts: Montserrat -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link 
@@ -11,29 +11,65 @@
   >
   <style>
     /* ---------- Global Reset & Typography ---------- */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Montserrat', sans-serif;
-      background: #f2f2f2;
+      background: #E5E9F7; /* Softer background */
       color: #333;
       min-height: 100vh;
+      position: relative;
       padding-bottom: 70px; /* room for bottom nav */
     }
-    h1, h2, h3 { color: #333; }
-    a { color: #2a9df4; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    h1, h2, h3 {
+      color: #2B59C3; /* Primary accent color */
+      margin-bottom: 10px;
+    }
+    p {
+      color: #555;
+      margin-bottom: 6px;
+    }
+    a {
+      color: #2B59C3;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------- Header Bar ---------- */
+    .app-header {
+      background: #fff;
+      padding: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 150;
+    }
+    .app-header h1 {
+      font-size: 1.3rem;
+      margin: 0;
+    }
 
     /* ---------- Mobile Container & Views ---------- */
     .view {
       display: none;
       padding: 15px;
     }
-    .active { display: block; }
+    .active {
+      display: block;
+    }
+
+    /* ---------- Main Container Cards ---------- */
     .container {
       background: #fff;
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       margin-bottom: 15px;
     }
 
@@ -62,7 +98,8 @@
       cursor: pointer;
     }
     .bottom-nav button.active {
-      color: #2a9df4;
+      color: #2B59C3;
+      font-weight: 700;
     }
     .bottom-nav button svg {
       width: 24px;
@@ -74,48 +111,66 @@
     .btn {
       display: inline-block;
       padding: 10px 20px;
-      background: #2a9df4;
+      background: #2B59C3;
       color: #fff;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
       transition: background 0.3s;
       margin: 5px 0;
+      font-size: 0.9rem;
     }
-    .btn:hover { background: #1c7cd6; }
+    .btn:hover {
+      background: #1f479c;
+    }
 
     /* ---------- Election Block ---------- */
     .election-block {
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
       padding: 12px;
       margin-bottom: 10px;
-      background: #fafafa;
+      background: #FAFAFF;
       transition: background 0.2s, transform 0.2s;
+      cursor: pointer;
     }
-    .election-block:hover { 
-      transform: translateY(-2px); 
-      background: #f0f0f0;
+    .election-block:hover {
+      transform: translateY(-2px);
+      background: #f0f0ff;
     }
-    .election-block h2 { font-weight: 700; margin-bottom: 8px; }
+    .election-block h2 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
 
     /* ---------- Position Block ---------- */
     .position-block {
       margin-bottom: 15px;
     }
-    .position-info { margin-bottom: 10px; }
-    .position-nav { margin-top: 10px; }
-    
+    .position-info {
+      margin-bottom: 10px;
+    }
+    .position-info h2 {
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+    .position-nav {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
     /* ---------- Candidate Blocks ---------- */
     .candidates {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 15px;
+      justify-content: flex-start;
     }
     .candidate-block {
       border: 1px solid #ddd;
-      padding: 8px;
-      border-radius: 4px;
+      padding: 10px;
+      border-radius: 6px;
       width: 120px;
       text-align: center;
       position: relative;
@@ -123,22 +178,28 @@
       background: #fff;
       transition: box-shadow 0.2s, transform 0.2s;
     }
-    .candidate-block:hover { 
+    .candidate-block:hover {
       box-shadow: 0 3px 8px rgba(0,0,0,0.1);
       transform: translateY(-2px);
     }
     .candidate-block img {
-      width: 70px;
-      height: 70px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       margin-bottom: 5px;
       border: 1px solid #ccc;
+      object-fit: cover;
+    }
+    .candidate-block p {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #333;
     }
     .best-choice {
       position: absolute;
       top: 5px;
       right: 5px;
-      background: #2a9df4;
+      background: #2B59C3;
       color: #fff;
       border-radius: 50%;
       padding: 2px 5px;
@@ -157,10 +218,12 @@
       z-index: 200;
       padding: 15px;
     }
-    .overlay.active { display: flex; }
+    .overlay.active {
+      display: flex;
+    }
     .candidate-panel {
       background: #fff;
-      border-radius: 4px;
+      border-radius: 6px;
       padding: 15px;
       max-width: 600px;
       width: 100%;
@@ -169,10 +232,15 @@
     }
     .candidate-panel img {
       width: 100%;
-      max-height: 200px;
+      max-height: 220px;
       object-fit: cover;
-      border-radius: 4px;
+      border-radius: 6px;
       margin-bottom: 10px;
+    }
+    .candidate-panel h2 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      color: #2B59C3;
     }
     .close-panel {
       position: absolute;
@@ -187,13 +255,14 @@
     .social-links a {
       margin-right: 10px;
       font-size: 0.9rem;
+      color: #2B59C3;
     }
 
     /* ---------- Reward Panel ---------- */
     .reward-panel {
       background: #fff;
       padding: 15px;
-      border-radius: 4px;
+      border-radius: 6px;
       text-align: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
@@ -201,43 +270,86 @@
     /* ---------- Read-only Summary ---------- */
     .summary-block {
       border: 1px solid #ddd;
-      border-radius: 4px;
+      border-radius: 6px;
       padding: 10px;
-      background: #f7f7f7;
+      background: #FAFAFF;
       margin-bottom: 10px;
     }
+    .summary-block h3 {
+      margin-bottom: 6px;
+      color: #2B59C3;
+    }
 
-    /* ---------- Profile View ---------- */
+    /* ---------- Profile (Ecco) View ---------- */
     #profileView .profile-info {
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    #profileView .profile-info .avatar-wrapper {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 10px;
+    }
+    #profileView .profile-info .avatar-wrapper .avatar-bg {
+      background: linear-gradient(135deg, #2B59C3, #4D79EC);
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
     #profileView .profile-info img {
       width: 100px;
       height: 100px;
       border-radius: 50%;
-      border: 1px solid #ccc;
-      margin-bottom: 10px;
+      border: 3px solid #fff;
+      object-fit: cover;
+      margin-top: 10px;
+      position: relative;
+      z-index: 2;
     }
     #profileView .profile-info h2 {
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
     #profileView .profile-info p {
       color: #666;
+      font-size: 0.9rem;
+      max-width: 260px;
+      margin: 0 auto;
     }
 
     /* ---------- Responsive Adjustments ---------- */
     @media (max-width: 480px) {
-      .candidate-block { width: 100px; }
-      .bottom-nav button { font-size: 0.8rem; }
+      .candidate-block {
+        width: 100px;
+      }
+      .bottom-nav button {
+        font-size: 0.8rem;
+      }
+      .candidate-block img {
+        width: 70px;
+        height: 70px;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- Top Header -->
+  <div class="app-header">
+    <h1>Ecclesia IEC</h1>
+  </div>
+
   <!-- Voting / Election Views -->
   <div id="electionView" class="view active">
     <div class="container">
-      <h1>Available Elections</h1>
+      <h2>Vote Now</h2>
+      <p>Select an election to get started:</p>
       <div id="electionList">
         <!-- Election blocks injected here -->
       </div>
@@ -246,20 +358,20 @@
 
   <div id="positionView" class="view">
     <div class="container">
-      <h1 id="positionElectionTitle"></h1>
+      <h2 id="positionElectionTitle"></h2>
       <div id="positionBlock">
         <!-- Position block info injected here -->
       </div>
       <div class="position-nav">
-        <button class="btn" id="skipBtn" onclick="skipPosition()">Skip Position</button>
-        <button class="btn" id="exitElectionBtn" onclick="exitElection()">Exit Election</button>
+        <button class="btn" id="skipBtn" onclick="skipPosition()">Skip</button>
+        <button class="btn" id="exitElectionBtn" onclick="exitElection()">Exit</button>
       </div>
     </div>
   </div>
 
   <div id="reviewView" class="view">
     <div class="container">
-      <h1>Your Election Choices</h1>
+      <h2>Your Election Choices</h2>
       <div id="reviewSummary">
         <!-- Summary injected here -->
       </div>
@@ -270,10 +382,13 @@
   <!-- Profile View -->
   <div id="profileView" class="view">
     <div class="container profile-info">
-      <img src="https://via.placeholder.com/100" alt="User Avatar">
+      <div class="avatar-wrapper">
+        <div class="avatar-bg"></div>
+        <!-- Example avatar placeholder -->
+        <img src="https://via.placeholder.com/120" alt="User Avatar">
+      </div>
       <h2>User123</h2>
-      <p>Welcome to your profile! Rewards earned from elections will be displayed here.</p>
-      <p>(This is a demo profile page.)</p>
+      <p>Welcome to your profile (Ecco) page. Your voting rewards and avatar accessories will show up here!</p>
     </div>
   </div>
 
@@ -400,7 +515,6 @@
     function showPrimaryView(viewId) {
       // Hide any subviews (position, review) if switching to main voting view
       if (viewId === 'electionView') {
-        // Ensure the election view is active and set the navigation buttons
         showView('electionView');
       } else if (viewId === 'profileView') {
         showView('profileView');
@@ -507,8 +621,10 @@
       position.vote = selectedCandidate;
       closeCandidatePanel();
       const voteConf = document.getElementById("voteConfirmation");
-      voteConf.innerHTML = `<p>You selected <strong>${selectedCandidate.name}</strong> for ${position.title}.</p>
-                            <button class="btn" onclick="confirmVote()">Confirm Vote</button>`;
+      voteConf.innerHTML = `
+        <p>You selected <strong>${selectedCandidate.name}</strong> for ${position.title}.</p>
+        <button class="btn" onclick="confirmVote()">Confirm Vote</button>
+      `;
     }
 
     function confirmVote() {
@@ -543,8 +659,14 @@
       currentElection.positions.forEach(position => {
         const summary = document.createElement("div");
         summary.className = "summary-block";
-        summary.innerHTML = `<h3>${position.title}</h3>
-                             <p><strong>Your Choice:</strong> ${position.vote ? (typeof position.vote === "object" ? position.vote.name : position.vote) : "No vote"}</p>`;
+        summary.innerHTML = `
+          <h3>${position.title}</h3>
+          <p><strong>Your Choice:</strong> ${
+            position.vote
+              ? (typeof position.vote === "object" ? position.vote.name : position.vote)
+              : "No vote"
+          }</p>
+        `;
         reviewContainer.appendChild(summary);
       });
     }
