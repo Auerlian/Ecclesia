@@ -7,9 +7,6 @@ function getRandomElement(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
   }
   
-  /**
-   * Generates a random candidate.
-   */
   function generateCandidate(candidateId) {
     const firstNames = ["Alice", "Bob", "Carol", "David", "Eve", "Frank", "Grace", "Holly"];
     const lastNames = ["Johnson", "Smith", "White", "Lee", "Brown", "Miller", "Davis"];
