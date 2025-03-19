@@ -26,7 +26,7 @@ function getRandomElement(arr) {
     return {
       id: candidateId,
       name: `${firstName} ${lastName}`,
-      image: "https://via.placeholder.com/150?text=" + encodeURIComponent(firstName),
+      image: "images/eccos/ecco_hair.png",
       manifesto: getRandomElement(manifestos),
       aiSummary: "Automatically generated summary about the candidate's platform.",
       social: {
@@ -104,7 +104,7 @@ function getRandomElement(arr) {
   /**
    * Generates an array of `count` Elections, each with 4–12 positions and 2–8 candidates per position.
    */
-  function generateRandomElections(count = 3) {
+  function generateRandomElections(count = 2) {
     const elections = [];
     for (let i = 1; i <= count; i++) {
       elections.push(generateElection(i));
