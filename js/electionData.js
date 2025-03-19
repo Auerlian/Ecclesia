@@ -77,7 +77,7 @@ function getRandomElement(arr) {
    * Generates a single election object with 4–12 positions.
    */
   function generateElection(electionId) {
-    const institutions = ["UoB Student Council", "Debating Society", "Computer Science Society"];
+    const institutions = ["UoB Student Council", "Debating Society"];
     const randomInstitution = getRandomElement(institutions);
   
     // random positions 4–12
@@ -103,10 +103,7 @@ function getRandomElement(arr) {
     };
   }
   
-  /**
-   * Generates an array of `count` Elections, each with 4–12 positions and 2–8 candidates per position.
-   */
-  function generateRandomElections(count = 2) {
+  function generateRandomElections(count = 1) {
     const elections = [];
     for (let i = 1; i <= count; i++) {
       elections.push(generateElection(i));
