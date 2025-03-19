@@ -4,322 +4,20 @@
   <meta charset="UTF-8" />
   <title>Mobile Election App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Google Fonts: Montserrat -->
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link 
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" 
     rel="stylesheet"
   >
-  <style>
-    /* ---------- Global Reset & Typography ---------- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: #f4f7fc;
-      color: #333;
-      min-height: 100vh;
-      padding-bottom: 80px; /* room for bottom nav */
-    }
-    h1, h2, h3 {
-      color: #1a1a1a;
-      margin-bottom: 10px;
-    }
-    p {
-      color: #555;
-      margin-bottom: 8px;
-    }
-    a {
-      color: #1976d2;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
 
-    /* ---------- App Header (Optional) ---------- */
-    .app-header {
-      background: #1976d2;
-      padding: 20px;
-      text-align: center;
-      color: #fff;
-      font-size: 1.2rem;
-      font-weight: 700;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 150;
-    }
-
-    /* ---------- Views ---------- */
-    .view {
-      display: none;
-      padding: 20px;
-    }
-    .active {
-      display: block;
-    }
-    .container {
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    /* ---------- Election Blocks ---------- */
-    .election-block {
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 15px;
-      border: 1px solid #e0e0e0;
-      transition: transform 0.2s, background 0.2s;
-      cursor: pointer;
-    }
-    .election-block:hover {
-      transform: translateY(-3px);
-      background: #f9f9ff;
-    }
-    .election-block h2 {
-      font-size: 1.15rem;
-      margin-bottom: 10px;
-    }
-
-    /* ---------- Position Block ---------- */
-    .position-block {
-      margin-bottom: 20px;
-    }
-    .position-info {
-      margin-bottom: 15px;
-    }
-    .position-info h2 {
-      font-size: 1.1rem;
-      margin-bottom: 8px;
-    }
-    .position-nav {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      margin-top: 20px;
-    }
-
-    /* ---------- Candidate Cards ---------- */
-    .candidates {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-    }
-    .candidate-block {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 15px;
-      width: 140px;
-      text-align: center;
-      position: relative;
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
-    }
-    .candidate-block:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .candidate-block img {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-    }
-    .candidate-block p {
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: #333;
-    }
-    .best-choice {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: #1976d2;
-      color: #fff;
-      border-radius: 50%;
-      padding: 4px 7px;
-      font-size: 0.75rem;
-      font-weight: bold;
-    }
-
-    /* ---------- Candidate Overlay ---------- */
-    .overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 300;
-      padding: 20px;
-    }
-    .overlay.active {
-      display: flex;
-    }
-    .candidate-panel {
-      background: #fff;
-      border-radius: 10px;
-      padding: 25px;
-      max-width: 600px;
-      width: 100%;
-      position: relative;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-      text-align: center;
-    }
-    .candidate-panel img {
-      width: 100%;
-      max-height: 240px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin-bottom: 15px;
-    }
-    .candidate-panel h2 {
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-      color: #1976d2;
-    }
-    .close-panel {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: transparent;
-      border: none;
-      font-size: 1.8rem;
-      color: #555;
-      cursor: pointer;
-    }
-    .social-links a {
-      margin-right: 15px;
-      font-size: 1rem;
-      color: #1976d2;
-    }
-
-    /* ---------- Reward Overlay for Voting ---------- */
-    .reward-panel {
-      background: #fff;
-      padding: 25px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-    }
-
-    /* ---------- Summary Block ---------- */
-    .summary-block {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 15px;
-    }
-    .summary-block h3 {
-      margin-bottom: 8px;
-      color: #1976d2;
-      font-size: 1.05rem;
-    }
-
-    /* ---------- Buttons ---------- */
-    .btn {
-      display: inline-block;
-      padding: 14px 28px;
-      background: #1976d2;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-      font-size: 1rem;
-      margin-top: 10px;
-    }
-    .btn:hover {
-      background: #115293;
-    }
-
-    /* ---------- Bottom Navigation ---------- */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
-      background: #fff;
-      border-top: 1px solid #e0e0e0;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 200;
-    }
-    .bottom-nav button {
-      background: none;
-      border: none;
-      color: #777;
-      font-size: 0.95rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-    }
-    .bottom-nav button.active {
-      color: #1976d2;
-      font-weight: 700;
-    }
-    .bottom-nav button svg {
-      width: 28px;
-      height: 28px;
-      margin-bottom: 4px;
-    }
-
-    /* ---------- Profile Section (Ecco) ---------- */
-    .profile-container {
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-    .ecco-section {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    /* Limit the Ecco’s size so it’s not too large */
-    .ecco-wrapper {
-      max-width: 150px; /* adjust as needed */
-      margin: 0 auto;
-    }
-    .ecco-svg {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* ---------- Responsive Adjustments ---------- */
-    @media (max-width: 480px) {
-      .candidate-block {
-        width: 120px;
-      }
-      .bottom-nav button svg {
-        width: 24px;
-        height: 24px;
-      }
-      .btn {
-        padding: 12px 22px;
-        font-size: 0.95rem;
-      }
-    }
-  </style>
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Voting-specific CSS -->
+  <link rel="stylesheet" href="css/voting.css">
+  <!-- Profile-specific CSS -->
+  <link rel="stylesheet" href="css/profile.css">
 </head>
 <body>
 
@@ -333,7 +31,7 @@
     <div class="container">
       <h2>Available Elections</h2>
       <p>Tap an election below to begin voting.</p>
-      <!-- IMPORTANT: This is where the JS looks for "electionList" -->
+      <!-- The JS looks for this to inject election blocks -->
       <div id="electionList"></div>
     </div>
   </div>
@@ -364,40 +62,16 @@
     <div class="profile-container">
       <h2>Profile / Ecco Section</h2>
       <p>Here is where you'd show Ecco, rewards, etc.</p>
-      
-      <!-- Ecco Section -->
+
+      <!-- Example Ecco Section -->
       <div class="ecco-section">
         <div class="ecco-wrapper">
-          <!-- Insert your Ecco SVG or an <img> for the Ecco Mascot -->
           <svg class="ecco-svg" version="1.0" xmlns="http://www.w3.org/2000/svg"
             width="300.000000pt" height="575.000000pt" viewBox="0 0 300.000000 575.000000"
             preserveAspectRatio="xMidYMid meet">
             <g transform="translate(0.000000,575.000000) scale(0.100000,-0.100000)"
-              fill="#1976d2" stroke="none">
-              <path d="M1394 5368 c-130 -11 -249 -43 -369 -102 -306 -150 -502 -406 -571
-              -746 -27 -134 -16 -343 25 -479 37 -121 64 -177 136 -286 60 -90 139 -174 232
-              -247 l62 -49 -23 -52 c-13 -29 -52 -113 -86 -187 -91 -199 -173 -398 -221
-              -540 -41 -118 -43 -131 -43 -240 0 -187 58 -346 173 -472 34 -36 61 -74 61
-              -83 0 -10 -25 -144 -55 -299 -94 -483 -224 -1194 -231 -1261 -11 -110 24 -121
-              160 -51 122 62 234 146 351 261 113 112 270 315 337 436 23 43 65 113 92 156
-              l49 78 27 -33 c14 -17 53 -78 85 -135 188 -331 382 -531 708 -733 114 -71 151
-              -84 174 -61 15 15 15 25 4 99 -22 147 -90 533 -161 903 -37 198 -78 422 -91
-              497 l-23 136 78 117 c93 137 131 229 147 354 16 116 3 205 -47 333 -32 83
-              -244 573 -311 720 -15 32 -25 59 -22 61 111 78 230 196 292 290 59 89 124 234
-              147 327 44 177 37 390 -17 565 -142 456 -595 763 -1069 723z m287 -187 c327
-              -85 564 -325 646 -657 23 -93 23 -285 0 -379 -63 -257 -213 -455 -439 -579
-              -144 -80 -294 -113 -466 -103 -127 8 -198 25 -309 77 -239 111 -401 300 -480
-              557 -23 78 -26 104 -26 233 0 116 4 160 21 221 95 347 367 591 727 650 76 12
-              241 2 326 -20z m-566 -1820 c129 -46 226 -63 360 -63 135 0 231 17 362 63 47
-              17 86 29 88 27 1 -2 50 -102 108 -223 57 -121 137 -286 176 -366 39 -80 78
-              -177 87 -215 22 -93 15 -245 -15 -334 -22 -65 -84 -170 -100 -170 -4 0 -16 51
-              -26 113 -24 148 -39 176 -98 177 -40 0 -63 -15 -75 -49 -15 -42 32 -310 253
-              -1456 67 -350 77 -406 71 -412 -7 -8 -170 116 -255 194 -136 123 -305 354
-              -386 527 -49 104 -105 258 -105 288 0 30 -53 78 -88 78 -48 0 -68 -27 -107
-              -145 -88 -269 -252 -537 -453 -742 -95 -97 -265 -233 -277 -222 -2 3 21 133
-              51 289 189 988 294 1550 294 1581 0 32 -44 69 -83 69 -58 0 -75 -30 -99 -174
-              -12 -69 -25 -126 -29 -126 -30 0 -110 161 -129 258 -20 99 -8 241 26 329 42
-              106 348 732 357 733 5 0 46 -13 92 -29z"/>
+               fill="#1976d2" stroke="none">
+              <path d="M1394 5368 ... (SVG PATHS) ... z"/>
             </g>
           </svg>
         </div>
@@ -415,13 +89,14 @@
     </button>
     <button id="navProfile" onclick="showPrimaryView('profileView')">
       <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2
+                 c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
       </svg>
       Profile
     </button>
   </div>
 
-  <!-- Candidate Overlay -->
+  <!-- Candidate Overlay (for viewing a candidate's details) -->
   <div id="candidateOverlay" class="overlay">
     <div class="candidate-panel">
       <button class="close-panel" onclick="closeCandidatePanel()">×</button>
@@ -443,254 +118,9 @@
     </div>
   </div>
 
-  <script>
-    /* ---------- SAMPLE DATA ---------- */
-    const elections = [
-      {
-        id: 1,
-        institution: "University Student Council",
-        timeRemaining: "2 days 5 hrs",
-        positionsCount: 2,
-        reward: "Free Coffee Voucher",
-        positions: [
-          {
-            id: 101,
-            title: "President",
-            info: "The President oversees all council operations.",
-            moreInfoLink: "#",
-            candidates: [
-              {
-                id: 1001,
-                name: "Alice Johnson",
-                image: "https://via.placeholder.com/150?text=Alice",
-                manifesto: "Better campus facilities and student support.",
-                aiSummary: "Focus on improved infrastructure and welfare.",
-                social: { twitter: "#", linkedin: "#" },
-                bestChoice: true
-              },
-              {
-                id: 1002,
-                name: "Bob Smith",
-                image: "https://via.placeholder.com/150?text=Bob",
-                manifesto: "Transparency and student empowerment.",
-                aiSummary: "Emphasizes accountability and active participation.",
-                social: { twitter: "#", linkedin: "#" },
-                bestChoice: false
-              }
-            ],
-            vote: null
-          },
-          {
-            id: 102,
-            title: "Vice President",
-            info: "Supports the President and manages specific projects.",
-            moreInfoLink: "#",
-            candidates: [
-              {
-                id: 1003,
-                name: "Carol White",
-                image: "https://via.placeholder.com/150?text=Carol",
-                manifesto: "Innovative projects for community engagement.",
-                aiSummary: "Strong focus on community and innovation.",
-                social: { twitter: "#", linkedin: "#" },
-                bestChoice: false
-              },
-              {
-                id: 1004,
-                name: "David Lee",
-                image: "https://via.placeholder.com/150?text=David",
-                manifesto: "Commitment to student representation.",
-                aiSummary: "Highlights dedication and representation.",
-                social: { twitter: "#", linkedin: "#" },
-                bestChoice: true
-              }
-            ],
-            vote: null
-          }
-        ]
-      }
-    ];
-
-    /* ---------- GLOBAL STATE ---------- */
-    let currentElection = null;
-    let currentPositionIndex = 0;
-    let selectedCandidate = null;
-
-    document.addEventListener("DOMContentLoaded", () => {
-      renderElectionList();
-    });
-
-    /* ---------- VIEW SWITCHING ---------- */
-    function showPrimaryView(viewId) {
-      if (viewId === 'electionView') {
-        showView('electionView');
-      } else if (viewId === 'profileView') {
-        showView('profileView');
-      }
-      document.getElementById("navVoting").classList.toggle("active", viewId === 'electionView');
-      document.getElementById("navProfile").classList.toggle("active", viewId === 'profileView');
-    }
-
-    function showView(viewId) {
-      document.querySelectorAll(".view").forEach(view => view.classList.remove("active"));
-      document.getElementById(viewId).classList.add("active");
-    }
-
-    /* ---------- ELECTION LIST ---------- */
-    function renderElectionList() {
-      const electionList = document.getElementById("electionList");
-      electionList.innerHTML = "";
-
-      elections.forEach(election => {
-        const block = document.createElement("div");
-        block.className = "election-block";
-        block.onclick = () => startElection(election.id);
-        block.innerHTML = `
-          <h2>${election.institution}</h2>
-          <p><strong>Time:</strong> ${election.timeRemaining}</p>
-          <p><strong>Positions:</strong> ${election.positionsCount}</p>
-          <p><strong>Reward:</strong> ${election.reward}</p>
-        `;
-        electionList.appendChild(block);
-      });
-    }
-
-    /* ---------- START ELECTION ---------- */
-    function startElection(electionId) {
-      currentElection = elections.find(e => e.id === electionId);
-      currentPositionIndex = 0;
-      selectedCandidate = null;
-      document.getElementById("positionElectionTitle").textContent = currentElection.institution;
-      showView("positionView");
-      renderCurrentPosition();
-    }
-
-    /* ---------- RENDER CURRENT POSITION ---------- */
-    function renderCurrentPosition() {
-      const posContainer = document.getElementById("positionBlock");
-      posContainer.innerHTML = "";
-      if (currentPositionIndex >= currentElection.positions.length) {
-        renderReviewSummary();
-        showView("reviewView");
-        return;
-      }
-      const position = currentElection.positions[currentPositionIndex];
-      const posBlock = document.createElement("div");
-      posBlock.className = "position-block";
-      posBlock.innerHTML = `
-        <div class="position-info">
-          <h2>Position: ${position.title}</h2>
-          <p>${position.info}</p>
-          <a href="${position.moreInfoLink}" target="_blank">More Info</a>
-        </div>
-        <div class="candidates" id="candidatesContainer"></div>
-        <div id="voteConfirmation" style="margin-top:15px;"></div>
-      `;
-      posContainer.appendChild(posBlock);
-      renderCandidates(position.candidates);
-    }
-
-    /* ---------- RENDER CANDIDATES ---------- */
-    function renderCandidates(candidates) {
-      const container = document.getElementById("candidatesContainer");
-      container.innerHTML = "";
-      candidates.forEach(candidate => {
-        const candidateDiv = document.createElement("div");
-        candidateDiv.className = "candidate-block";
-        candidateDiv.onclick = () => openCandidatePanel(candidate);
-        candidateDiv.innerHTML = `
-          <img src="${candidate.image}" alt="${candidate.name}">
-          <p>${candidate.name}</p>
-          ${candidate.bestChoice ? '<div class="best-choice">★</div>' : ""}
-        `;
-        container.appendChild(candidateDiv);
-      });
-    }
-
-    /* ---------- CANDIDATE PANEL ---------- */
-    function openCandidatePanel(candidate) {
-      selectedCandidate = candidate;
-      document.getElementById("candidateImage").src = candidate.image;
-      document.getElementById("candidateName").textContent = candidate.name;
-      document.getElementById("candidateManifesto").textContent = candidate.manifesto;
-      document.getElementById("candidateAISummary").textContent = candidate.aiSummary;
-      const socialDiv = document.getElementById("candidateSocial");
-      socialDiv.innerHTML = "";
-      for (const [platform, link] of Object.entries(candidate.social)) {
-        const anchor = document.createElement("a");
-        anchor.href = link;
-        anchor.textContent = platform;
-        anchor.target = "_blank";
-        socialDiv.appendChild(anchor);
-      }
-      document.getElementById("candidateOverlay").classList.add("active");
-    }
-
-    function closeCandidatePanel() {
-      document.getElementById("candidateOverlay").classList.remove("active");
-    }
-
-    /* ---------- VOTE ---------- */
-    function voteForCandidate() {
-      const position = currentElection.positions[currentPositionIndex];
-      position.vote = selectedCandidate;
-      closeCandidatePanel();
-      const voteConf = document.getElementById("voteConfirmation");
-      voteConf.innerHTML = `
-        <p>You selected <strong>${selectedCandidate.name}</strong> for ${position.title}.</p>
-        <button class="btn" onclick="confirmVote()">Confirm Vote</button>
-      `;
-    }
-
-    function confirmVote() {
-      document.getElementById("rewardOverlay").classList.add("active");
-    }
-
-    function rewardConfirmed() {
-      document.getElementById("rewardOverlay").classList.remove("active");
-      currentPositionIndex++;
-      selectedCandidate = null;
-      renderCurrentPosition();
-    }
-
-    /* ---------- SKIP & EXIT ---------- */
-    function skipPosition() {
-      currentElection.positions[currentPositionIndex].vote = "Skipped";
-      currentPositionIndex++;
-      selectedCandidate = null;
-      renderCurrentPosition();
-    }
-
-    function exitElection() {
-      alert("Exiting election. Your progress has been saved.");
-      showView("electionView");
-    }
-
-    /* ---------- REVIEW SUMMARY ---------- */
-    function renderReviewSummary() {
-      const reviewContainer = document.getElementById("reviewSummary");
-      reviewContainer.innerHTML = "";
-      currentElection.positions.forEach(position => {
-        const summary = document.createElement("div");
-        summary.className = "summary-block";
-        summary.innerHTML = `
-          <h3>${position.title}</h3>
-          <p><strong>Your Choice:</strong> ${
-            position.vote
-              ? (typeof position.vote === "object" ? position.vote.name : position.vote)
-              : "No vote"
-          }</p>
-        `;
-        reviewContainer.appendChild(summary);
-      });
-    }
-
-    function backToElections() {
-      currentElection = null;
-      currentPositionIndex = 0;
-      selectedCandidate = null;
-      showView("electionView");
-    }
-  </script>
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/voting.js"></script>
+  <script src="js/profile.js"></script>
 </body>
 </html>

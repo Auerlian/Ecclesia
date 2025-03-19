@@ -1,0 +1,149 @@
+/* ========== voting.css (Voting-specific) ========== */
+
+/* Election Blocks */
+.election-block {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0;
+    transition: transform 0.2s, background 0.2s;
+    cursor: pointer;
+  }
+  
+  .election-block:hover {
+    transform: translateY(-3px);
+    background: #f9f9ff;
+  }
+  
+  .election-block h2 {
+    font-size: 1.15rem;
+    margin-bottom: 10px;
+  }
+  
+  /* Position Block */
+  .position-block {
+    margin-bottom: 20px;
+  }
+  .position-info {
+    margin-bottom: 15px;
+  }
+  .position-info h2 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+  .position-nav {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  /* Candidate Cards */
+  .candidates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  .candidate-block {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    width: 140px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .candidate-block:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .candidate-block img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+  }
+  .candidate-block p {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #333;
+  }
+  .best-choice {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #1976d2;
+    color: #fff;
+    border-radius: 50%;
+    padding: 4px 7px;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+  
+  /* Candidate Panel Overlay */
+  .candidate-panel {
+    background: #fff;
+    border-radius: 10px;
+    padding: 25px;
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+  .candidate-panel img {
+    width: 100%;
+    max-height: 240px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  .candidate-panel h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #1976d2;
+  }
+  .close-panel {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 1.8rem;
+    color: #555;
+    cursor: pointer;
+  }
+  .social-links a {
+    margin-right: 15px;
+    font-size: 1rem;
+    color: #1976d2;
+  }
+  
+  /* Reward Panel for Voting */
+  .reward-panel {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  }
+  
+  /* Summary Block */
+  .summary-block {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  .summary-block h3 {
+    margin-bottom: 8px;
+    color: #1976d2;
+    font-size: 1.05rem;
+  }
