@@ -150,6 +150,7 @@
 
   .ecco-wrapper {
     max-height: 300px;
+    margin-bottom: 12px;
   }
 
   .ecco-wrapper svg{
