@@ -148,18 +148,28 @@
     font-size: 1.05rem;
   }
 
-  .ecco-wrapper {
+  /* Ecco wrapper container */
+.ecco-wrapper {
+    /* Constrain the wrapper to a set width or height as needed */
+    max-width: 300px;
     max-height: 300px;
-    margin-bottom: 12px;
+    margin: 0 auto 12px;
+    /* optional: center it horizontally */
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-
-  .ecco-wrapper svg{
-    height: 300px;
+  
+  /* Replace the SVG rules with rules for the Ecco <img> */
+  .ecco-wrapper img {
+    max-height: 320px;      /* maintains aspect ratio */
     display: block;
-    margin: 0 auto;
+    object-fit: contain; /* or cover, if you prefer */
   }
-
-  .profile-text{
+  
+  /* Profile text styling remains the same */
+  .profile-text {
     text-align: center;
     padding: 0 50px;
   }
+  

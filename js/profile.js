@@ -1,77 +1,3 @@
-// ========== voting.js ==========
-
-// Sample Data
-const elections = [
-    {
-      id: 1,
-      institution: "University Student Council",
-      timeRemaining: "2 days 5 hrs",
-      positionsCount: 2,
-      reward: "Free Coffee Voucher",
-      positions: [
-        {
-          id: 101,
-          title: "President",
-          info: "The President oversees all council operations.",
-          moreInfoLink: "#",
-          candidates: [
-            {
-              id: 1001,
-              name: "Alice Johnson",
-              image: "https://via.placeholder.com/150?text=Alice",
-              manifesto: "Better campus facilities and student support.",
-              aiSummary: "Focus on improved infrastructure and welfare.",
-              social: { twitter: "#", linkedin: "#" },
-              bestChoice: true
-            },
-            {
-              id: 1002,
-              name: "Bob Smith",
-              image: "https://via.placeholder.com/150?text=Bob",
-              manifesto: "Transparency and student empowerment.",
-              aiSummary: "Emphasizes accountability and active participation.",
-              social: { twitter: "#", linkedin: "#" },
-              bestChoice: false
-            }
-          ],
-          vote: null
-        },
-        {
-          id: 102,
-          title: "Vice President",
-          info: "Supports the President and manages specific projects.",
-          moreInfoLink: "#",
-          candidates: [
-            {
-              id: 1003,
-              name: "Carol White",
-              image: "https://via.placeholder.com/150?text=Carol",
-              manifesto: "Innovative projects for community engagement.",
-              aiSummary: "Strong focus on community and innovation.",
-              social: { twitter: "#", linkedin: "#" },
-              bestChoice: false
-            },
-            {
-              id: 1004,
-              name: "David Lee",
-              image: "https://via.placeholder.com/150?text=David",
-              manifesto: "Commitment to student representation.",
-              aiSummary: "Highlights dedication and representation.",
-              social: { twitter: "#", linkedin: "#" },
-              bestChoice: true
-            }
-          ],
-          vote: null
-        }
-      ]
-    }
-    // Additional elections can be added here...
-  ];
-  
-  // Global state for voting
-  let currentElection = null;
-  let currentPositionIndex = 0;
-  let selectedCandidate = null;
   
   // Render the election list inside #electionList
   function renderElectionList() {
@@ -239,3 +165,34 @@ const elections = [
     selectedCandidate = null;
     showView("electionView");
   }
+
+  // An array of all your Ecco image paths in the `images/eccos/` folder
+const eccoImages = [
+    "images/eccos/ecco.png",
+    "images/eccos/ecco_balloon.png",
+    "images/eccos/ecco_cowboy.png",
+    "images/eccos/ecco_hair.png",
+    "images/eccos/ecco_pet.png",
+    "images/eccos/ecco_pirate.png",
+    "images/eccos/ecco_shopping.png"
+  ];
+  
+  // A helper to pick one randomly
+  function getRandomEccoImage() {
+    const randomIndex = Math.floor(Math.random() * eccoImages.length);
+    return eccoImages[randomIndex];
+  }
+  
+  // Attach to the claim_reward button
+  const claimRewardBtn = document.getElementById("claim_reward");
+  if (claimRewardBtn) {
+    claimRewardBtn.addEventListener("click", () => {
+      // 1) If you’re doing reward logic, you might update the reward count here
+      // 2) Now randomly change the Ecco image:
+      const eccoImgElem = document.getElementById("eccoImage");
+      if (eccoImgElem) {
+        eccoImgElem.src = getRandomEccoImage();
+      }
+    });
+  }
+  
