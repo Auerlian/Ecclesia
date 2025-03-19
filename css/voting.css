@@ -149,3 +149,72 @@
     color: #1976d2;
     font-size: 1.05rem;
   }
+
+  /* Position nav top bar styling (optional) */
+.position-nav-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+  }
+  
+  /* The position count in the middle, e.g. "6/8" */
+  .position-count {
+    font-weight: bold;
+  }
+  
+  /* Reward overlay “pop” animation */
+  .reward-panel.animate {
+    animation: celebratePop 0.6s ease-in-out forwards; /* or 0.8s, tweak as you like */
+  }
+  
+  @keyframes celebratePop {
+    0% {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* The red circle badge for reward count on the Profile button */
+  .reward-badge {
+    background-color: #ff4c4c;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    min-width: 1.2rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    text-align: center;
+    display: none; /* hidden if 0 */
+    margin-left: 5px;
+    padding: 0 4px;
+  }
+  
+  /* Reward overlay animate */
+.reward-panel.animate {
+    animation: celebratePop 0.6s ease-in-out forwards; 
+  }
+  
+  @keyframes celebratePop {
+    0% {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
