@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Mobile Election App - Profile</title>
+  <title>Mobile Election App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Google Fonts: Montserrat -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -11,22 +11,276 @@
     rel="stylesheet"
   >
   <style>
-    /* Global Reset & Typography */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* ---------- Global Reset & Typography ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Montserrat', sans-serif;
       background: #f4f7fc;
       color: #333;
       min-height: 100vh;
-      padding: 20px;
-      padding-bottom: 80px;
+      padding-bottom: 80px; /* room for bottom nav */
     }
-    h1, h2, h3 { color: #1a1a1a; margin-bottom: 10px; }
-    p { color: #555; margin-bottom: 8px; }
-    a { color: #1976d2; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    h1, h2, h3 {
+      color: #1a1a1a;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #555;
+      margin-bottom: 8px;
+    }
+    a {
+      color: #1976d2;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
 
-    /* Container for Profile Section */
+    /* ---------- App Header (Optional) ---------- */
+    .app-header {
+      background: #1976d2;
+      padding: 20px;
+      text-align: center;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 150;
+    }
+
+    /* ---------- Views ---------- */
+    .view {
+      display: none;
+      padding: 20px;
+    }
+    .active {
+      display: block;
+    }
+    .container {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* ---------- Election Blocks ---------- */
+    .election-block {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 15px;
+      border: 1px solid #e0e0e0;
+      transition: transform 0.2s, background 0.2s;
+      cursor: pointer;
+    }
+    .election-block:hover {
+      transform: translateY(-3px);
+      background: #f9f9ff;
+    }
+    .election-block h2 {
+      font-size: 1.15rem;
+      margin-bottom: 10px;
+    }
+
+    /* ---------- Position Block ---------- */
+    .position-block {
+      margin-bottom: 20px;
+    }
+    .position-info {
+      margin-bottom: 15px;
+    }
+    .position-info h2 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+    .position-nav {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    /* ---------- Candidate Cards ---------- */
+    .candidates {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .candidate-block {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      width: 140px;
+      text-align: center;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .candidate-block:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .candidate-block img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+    }
+    .candidate-block p {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #333;
+    }
+    .best-choice {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #1976d2;
+      color: #fff;
+      border-radius: 50%;
+      padding: 4px 7px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    /* ---------- Candidate Overlay ---------- */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      padding: 20px;
+    }
+    .overlay.active {
+      display: flex;
+    }
+    .candidate-panel {
+      background: #fff;
+      border-radius: 10px;
+      padding: 25px;
+      max-width: 600px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .candidate-panel img {
+      width: 100%;
+      max-height: 240px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    .candidate-panel h2 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #1976d2;
+    }
+    .close-panel {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      font-size: 1.8rem;
+      color: #555;
+      cursor: pointer;
+    }
+    .social-links a {
+      margin-right: 15px;
+      font-size: 1rem;
+      color: #1976d2;
+    }
+
+    /* ---------- Reward Overlay for Voting ---------- */
+    .reward-panel {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    /* ---------- Summary Block ---------- */
+    .summary-block {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    .summary-block h3 {
+      margin-bottom: 8px;
+      color: #1976d2;
+      font-size: 1.05rem;
+    }
+
+    /* ---------- Buttons ---------- */
+    .btn {
+      display: inline-block;
+      padding: 14px 28px;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+    .btn:hover {
+      background: #115293;
+    }
+
+    /* ---------- Bottom Navigation ---------- */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: #fff;
+      border-top: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 200;
+    }
+    .bottom-nav button {
+      background: none;
+      border: none;
+      color: #777;
+      font-size: 0.95rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+    .bottom-nav button.active {
+      color: #1976d2;
+      font-weight: 700;
+    }
+    .bottom-nav button svg {
+      width: 28px;
+      height: 28px;
+      margin-bottom: 4px;
+    }
+
+    /* ---------- Profile Section (Ecco) ---------- */
     .profile-container {
       background: #fff;
       border-radius: 10px;
@@ -36,210 +290,122 @@
       position: relative;
       overflow: hidden;
     }
-
-    /* Background container for trip animation */
-    .profile-bg {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-size: cover;
-      background-repeat: repeat-x;
-      z-index: 0;
-      opacity: 0; /* Initially hidden */
-    }
-    /* Animate the background to move slowly */
-    @keyframes slideBackground {
-      from { background-position: 0 0; }
-      to { background-position: -1000px 0; }
-    }
-    .profile-bg.active {
-      animation: slideBackground 30s linear infinite;
-      opacity: 1;
-    }
-
-    /* Ecco Section */
     .ecco-section {
       text-align: center;
-      position: relative;
-      z-index: 1; /* Above background */
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
+    /* Limit the Ecco’s size so it’s not too large */
     .ecco-wrapper {
-      display: inline-block;
-      position: relative;
-      max-width: 150px; /* Adjust to scale down Ecco */
-      max-height: 250px;
-      width: 100%;
-      height: auto;
+      max-width: 150px; /* adjust as needed */
+      margin: 0 auto;
     }
     .ecco-svg {
       width: 100%;
       height: auto;
       display: block;
     }
-    /* Accessory overlay positioned over Ecco */
-    .accessory-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: auto;
-      pointer-events: none;
-    }
 
-    /* Rewards Section */
-    .reward-section {
-      text-align: center;
-      margin-bottom: 30px;
-      position: relative;
-      z-index: 1;
-    }
-    .reward-section .btn {
-      padding: 14px 28px;
-      background: #1976d2;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s;
-    }
-    .reward-section .btn:hover {
-      background: #115293;
-    }
-    /* Reward Popup Overlay */
-    .reward-popup-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 300;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-    .reward-popup-overlay.active {
-      display: flex;
-      opacity: 1;
-    }
-    .reward-popup {
-      background: #fff;
-      border-radius: 10px;
-      padding: 25px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      position: relative;
-      transform: translateY(-20px);
-      transition: transform 0.4s ease;
-    }
-    .reward-popup-overlay.active .reward-popup {
-      transform: translateY(0);
-    }
-    .reward-popup .close-popup {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: transparent;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-    .fun-fact-display {
-      margin-top: 15px;
-      font-style: italic;
-      color: #444;
-    }
-
-    /* Unlocks Menu */
-    .unlocks-menu {
-      border-top: 1px solid #ddd;
-      padding-top: 20px;
-      position: relative;
-      z-index: 1;
-    }
-    .menu-tabs {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 15px;
-    }
-    .menu-tabs button {
-      flex: 1;
-      padding: 10px;
-      background: #e0e0e0;
-      border: none;
-      border-radius: 5px;
-      margin: 0 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .menu-tabs button.active {
-      background: #1976d2;
-      color: #fff;
-      font-weight: bold;
-    }
-    .menu-content .tab-content {
-      display: none;
-      text-align: center;
-      padding: 10px;
-    }
-    .menu-content .tab-content.active {
-      display: block;
+    /* ---------- Responsive Adjustments ---------- */
+    @media (max-width: 480px) {
+      .candidate-block {
+        width: 120px;
+      }
+      .bottom-nav button svg {
+        width: 24px;
+        height: 24px;
+      }
+      .btn {
+        padding: 12px 22px;
+        font-size: 0.95rem;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div id="profileView" class="profile-container">
-    <!-- Background for trip -->
-    <div id="profileBg" class="profile-bg"></div>
+  <!-- Optional Header -->
+  <div class="app-header">
+    Mobile Election App
+  </div>
 
-    <!-- 1. Ecco Section -->
-    <div class="ecco-section" id="eccoSection">
-      <div class="ecco-wrapper">
-        <img class="ecco-svg" src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjMwMC4wMDAwMHB0IiBoZWlnaHQ9IjU3NS4wMDAwMDBwdCIgdmlld0JveD0iMCAwIDMwMC41MDAwMCA1NzUuNTAwMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLDU3NS41MDAwMDApIHNjYWxlKDAuMTAwMDAwMCwtMC4xMDAwMDAwKSIgZmlsbD0iIzE5NzZkMiIgc3Ryb2tlPSJub25lIj48cGF0aCBkPSJNMTM5NCA1MzY4IGMtMTMwIC0xMS0yNDktNDMtLTM2OSAtMTAyIC0zMDYgLTE1MCAtNTAyIC00MDYgLTU3MSAtNzQ2IC0yNyAtMTM0IC0xNiAtMzQzIDI1IC00NzkgMzcgLTEyMSA2NCAtMTc3IDEzNiAtMjg2IDYwIC05MCAxMzkgLTE3NCAyMzIgLTI0NyBsNjIgLTQ5IC0yMyAtNTIgYy0xMyAtMjkgNTItMTEzIDg2IC0xODcgOTEtMTk5IDE3MyAtMzk4IDItNTQwIC0yMjEgLTU0MCAtNjEtNDExIC0xOTkgLTE3MyAtMTczIC00MDgtMjIxIC01NDAgLTQxIC0xMTggLTQzIC0xMzEgLTQzIC0yNDAgMCAtMTg3IDU4IC0zNDYgMTczIC00NzIgMzQtMzYgNjEtNzQgNjEtODMgMCAtMTAgLTI1IC0xNDQgLTU1IC0yOTkgOTQtNDgzIDIyNCAtMTE5NCAtMjMxIC0xMjYxIC0xMSAtMTEwIDI0IC0xMjAgMTYwIC01MSAxMjIgNjIgMjM0IDE0NiAzNTEgMjYxIDExMyAxMTIgMjcwIDMxNSAzMzcgMzM3IDQzNiAyMyA0MyA2NSA1MTEgMTQ0IC05NSAxNjI0IDM2IC0xMTggNjQgLTE3NyAxMzYgLTI4NiAxMTIgLTIzNCA2NCAtMjM3IDEzNiAtMzUxIDI2MSAtMTEyIDIyNyAtMjcwIDMxNSAtMzM3IDMzNyAtMjMgNDMgNjUgMTEzIDI0IDk0IC0xOTQgLS0yMzYgNjkgLTE3OSAxNjAgLTUxIDEyMiA2MiAyMzQgMTQ2IDM1MSAyNjEgMTEzIDExMiAxMTIgMjcwIDMxNSAzMzcgMzM3IDIzIDE1IDExMCAyNCAxNjAgNTYgMTIyIDYyIDEwMSAyMzQgMjQgMTU3IDI0IDk2IDE2MCAyNiAzMzkgNDIgMTA2IDM0OCA3MzIgNzUgNSAwIDQ2IC0xMyA5MiAtMjkgeiIvPjxwYXRoIGQ9Ik0xMzcwIDUzNjggYy0xMzAgLTExLTI0OSAtNDMtLTM2OSAtMTAyIC0zMDYgLTE1MCAtNTAyIC00MDYgLTU3MSAtNzQ2IC0yNyAtMTM0IC0xNiAtMzQzIDI1IC00NzkgMzcgLTEyMSA2NCAtMTc3IDEzNiAtMjg2IDYwIC05MCAxMzkgLTE3NCAyMzIgLTI0NyBsNjIgLTQ5IC0yMyAtNTIgYy0xMyAtMjkgNTItMTEzIDg2IC0xODcgOTEtMTk5IDE3MyAtMzk4IDItNTQwIC0yMjEgLTU0MCAtNjEtNDExIC0xOTkgLTE3MyAtMTczIC00MDgtMjIxIC01NDAgLTQxIC0xMTggLTQzIC0xMzEgLTQzIC0yNDAgMCAtMTg3IDU4IC0zNDYgMTczIC00NzIgMzQtMzYgNjEtNzQgNjEtODMgMCAgLTEwIC0yNSAtMTQ0IC01NSAtMjk5IDk0IC0xMTkgMTM3IC0yODYgMTc2IC0zNjAgMzkgLTgwIDc4IC0xNzcgODctMjE1IDIyIC05MyAxNSAtMjQ5IDExNCAtMTYzIDI2MCAtNTEgMTIyIDYyIDIzNCAxNDYgMzUxIDI2MSAxMTMgMjcwIDMxNSAzMzcgMzM3IDIzIDE1IDExMCAyNCAxNjAgNTYgMTIyIDYyIDEwMSAyMzQgMjQgMTU3IDI0IDk2IDE2MCAyNiAzMzkgNDIgMTA2IDM0OCA3MzIgNzUgNSAwIDQ2IC0xMyA5MiAtMjkgeiIvPjxwYXRoIGQ9Ik0xMzcwIDUzNjggYy0xMzAgLTExLTI0OSAtNDMtLTM2OSAtMTAyIC0zMDYgLTE1MCAtNTAyIC00MDYgLTU3MSAtNzQ2IC0yNyAtMTM0IC0xNiAtMzQzIDI1IC00NzkgMzcgLTEyMSA2NCAtMTc3IDEzNiAtMjg2IDYwIC05MCAxMzkgLTE3NCAyMzIgLTI0NyBsNjIgLTQ5IC0yMyAtNTIgYy0xMyAtMjkgNTItMTEzIDg2IC0xODcgOTEtMTk5IDE3MyAtMzk4IDItNTQwIC0yMjEgLTU0MCAtNjEtNDExIC0xOTkgLTE3MyAtMTczIC00MDgtMjIxIC01NDAgLTQxIC0xMTggLTQzIC0xMzEgLTQzIC0yNDAgMCAtMTg3IDU4IC0zNDYgMTczIC00NzIgMzQtMzYgNjEtNzQgNjEtODMgMCAgLTEwIC0yNSAtMTQ0IC01NSAtMjk5IDk0IC0xMTkgMTM3IC0yODYgMTc2IC0zNjAgMzkgLTgwIDc4IC0xNzcgODctMjE1IDIyIC05MyAxNSAtMjQ5IDExNCAtMTYzIDI2MCAtNTEgMTIyIDYyIDIzNCAxNDYgMzUxIDI2MSAxMTMgMjcwIDMxNSAzMzcgMzM3IDIzIDE1IDExMCAyNCAxNjAgNTYgMTIyIDYyIDEwMSAyMzQgMjQgMTU3IDI0IDk2IDE2MCAyNiAzMzkgNDIgMTA2IDM0OCA3MzIgNzUgNSAwIDQ2IC0xMyA5MiAtMjkgeiIvPjwvc3ZnPg==" alt="Ecco Mascot">
-        <!-- Accessory overlay (hidden by default) -->
-        <img id="accessoryOverlay" class="accessory-overlay" src="" alt="" style="display: none;">
+  <!-- 1. Election View -->
+  <div id="electionView" class="view active">
+    <div class="container">
+      <h2>Available Elections</h2>
+      <p>Tap an election below to begin voting.</p>
+      <!-- IMPORTANT: This is where the JS looks for "electionList" -->
+      <div id="electionList"></div>
+    </div>
+  </div>
+
+  <!-- 2. Position View -->
+  <div id="positionView" class="view">
+    <div class="container">
+      <h2 id="positionElectionTitle"></h2>
+      <div id="positionBlock"></div>
+      <div class="position-nav">
+        <button class="btn" id="skipBtn" onclick="skipPosition()">Skip</button>
+        <button class="btn" id="exitElectionBtn" onclick="exitElection()">Exit</button>
       </div>
     </div>
+  </div>
 
-    <!-- 2. Rewards Section -->
-    <div class="reward-section">
-      <button id="claimRewardBtn" class="btn">Claim Reward</button>
-      <div id="rewardPopup" class="reward-popup-overlay">
-        <div class="reward-popup">
-          <button class="close-popup" onclick="closeRewardPopup()">×</button>
-          <div id="rewardContent">
-            <!-- Reward details will be injected here -->
-          </div>
-        </div>
-      </div>
-      <div id="funFactDisplay" class="fun-fact-display"></div>
+  <!-- 3. Review View -->
+  <div id="reviewView" class="view">
+    <div class="container">
+      <h2>Your Election Choices</h2>
+      <div id="reviewSummary"></div>
+      <button class="btn" onclick="backToElections()">Back to Elections</button>
     </div>
+  </div>
 
-    <!-- 3. Unlocks Menu Section -->
-    <div class="unlocks-menu">
-      <h2>Your Unlocked Items</h2>
-      <div class="menu-tabs">
-        <button class="tab-btn active" onclick="showTab('funFacts', event)">Fun Facts</button>
-        <button class="tab-btn" onclick="showTab('accessories', event)">Accessories</button>
-        <button class="tab-btn" onclick="showTab('trips', event)">Trips</button>
-      </div>
-      <div class="menu-content">
-        <div id="tabFunFacts" class="tab-content active">
-          <p>No fun facts yet.</p>
-        </div>
-        <div id="tabAccessories" class="tab-content">
-          <p>No accessories unlocked.</p>
-        </div>
-        <div id="tabTrips" class="tab-content">
-          <p>No trips recorded.</p>
+  <!-- 4. Profile View -->
+  <div id="profileView" class="view">
+    <div class="profile-container">
+      <h2>Profile / Ecco Section</h2>
+      <p>Here is where you'd show Ecco, rewards, etc.</p>
+      
+      <!-- Ecco Section -->
+      <div class="ecco-section">
+        <div class="ecco-wrapper">
+          <!-- Insert your Ecco SVG or an <img> for the Ecco Mascot -->
+          <svg class="ecco-svg" version="1.0" xmlns="http://www.w3.org/2000/svg"
+            width="300.000000pt" height="575.000000pt" viewBox="0 0 300.000000 575.000000"
+            preserveAspectRatio="xMidYMid meet">
+            <g transform="translate(0.000000,575.000000) scale(0.100000,-0.100000)"
+              fill="#1976d2" stroke="none">
+              <path d="M1394 5368 c-130 -11 -249 -43 -369 -102 -306 -150 -502 -406 -571
+              -746 -27 -134 -16 -343 25 -479 37 -121 64 -177 136 -286 60 -90 139 -174 232
+              -247 l62 -49 -23 -52 c-13 -29 -52 -113 -86 -187 -91 -199 -173 -398 -221
+              -540 -41 -118 -43 -131 -43 -240 0 -187 58 -346 173 -472 34 -36 61 -74 61
+              -83 0 -10 -25 -144 -55 -299 -94 -483 -224 -1194 -231 -1261 -11 -110 24 -121
+              160 -51 122 62 234 146 351 261 113 112 270 315 337 436 23 43 65 113 92 156
+              l49 78 27 -33 c14 -17 53 -78 85 -135 188 -331 382 -531 708 -733 114 -71 151
+              -84 174 -61 15 15 15 25 4 99 -22 147 -90 533 -161 903 -37 198 -78 422 -91
+              497 l-23 136 78 117 c93 137 131 229 147 354 16 116 3 205 -47 333 -32 83
+              -244 573 -311 720 -15 32 -25 59 -22 61 111 78 230 196 292 290 59 89 124 234
+              147 327 44 177 37 390 -17 565 -142 456 -595 763 -1069 723z m287 -187 c327
+              -85 564 -325 646 -657 23 -93 23 -285 0 -379 -63 -257 -213 -455 -439 -579
+              -144 -80 -294 -113 -466 -103 -127 8 -198 25 -309 77 -239 111 -401 300 -480
+              557 -23 78 -26 104 -26 233 0 116 4 160 21 221 95 347 367 591 727 650 76 12
+              241 2 326 -20z m-566 -1820 c129 -46 226 -63 360 -63 135 0 231 17 362 63 47
+              17 86 29 88 27 1 -2 50 -102 108 -223 57 -121 137 -286 176 -366 39 -80 78
+              -177 87 -215 22 -93 15 -245 -15 -334 -22 -65 -84 -170 -100 -170 -4 0 -16 51
+              -26 113 -24 148 -39 176 -98 177 -40 0 -63 -15 -75 -49 -15 -42 32 -310 253
+              -1456 67 -350 77 -406 71 -412 -7 -8 -170 116 -255 194 -136 123 -305 354
+              -386 527 -49 104 -105 258 -105 288 0 30 -53 78 -88 78 -48 0 -68 -27 -107
+              -145 -88 -269 -252 -537 -453 -742 -95 -97 -265 -233 -277 -222 -2 3 21 133
+              51 289 189 988 294 1550 294 1581 0 32 -44 69 -83 69 -58 0 -75 -30 -99 -174
+              -12 -69 -25 -126 -29 -126 -30 0 -110 161 -129 258 -20 99 -8 241 26 329 42
+              106 348 732 357 733 5 0 46 -13 92 -29z"/>
+            </g>
+          </svg>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Bottom Navigation (for switching between Voting and Profile views) -->
+  <!-- Bottom Navigation -->
   <div class="bottom-nav">
     <button id="navVoting" class="active" onclick="showPrimaryView('electionView')">
       <svg viewBox="0 0 24 24" fill="currentColor">
@@ -255,7 +421,7 @@
     </button>
   </div>
 
-  <!-- Candidate Panel (for Voting) -->
+  <!-- Candidate Overlay -->
   <div id="candidateOverlay" class="overlay">
     <div class="candidate-panel">
       <button class="close-panel" onclick="closeCandidatePanel()">×</button>
@@ -268,7 +434,7 @@
     </div>
   </div>
 
-  <!-- Reward Popup for Voting -->
+  <!-- Reward Overlay (for voting) -->
   <div id="rewardOverlay" class="overlay">
     <div class="reward-panel">
       <h2>Congratulations!</h2>
@@ -278,9 +444,7 @@
   </div>
 
   <script>
-    /* ===============================
-       Election App Data & Functions 
-    =============================== */
+    /* ---------- SAMPLE DATA ---------- */
     const elections = [
       {
         id: 1,
@@ -347,6 +511,7 @@
       }
     ];
 
+    /* ---------- GLOBAL STATE ---------- */
     let currentElection = null;
     let currentPositionIndex = 0;
     let selectedCandidate = null;
@@ -355,6 +520,7 @@
       renderElectionList();
     });
 
+    /* ---------- VIEW SWITCHING ---------- */
     function showPrimaryView(viewId) {
       if (viewId === 'electionView') {
         showView('electionView');
@@ -370,9 +536,11 @@
       document.getElementById(viewId).classList.add("active");
     }
 
+    /* ---------- ELECTION LIST ---------- */
     function renderElectionList() {
       const electionList = document.getElementById("electionList");
       electionList.innerHTML = "";
+
       elections.forEach(election => {
         const block = document.createElement("div");
         block.className = "election-block";
@@ -387,6 +555,7 @@
       });
     }
 
+    /* ---------- START ELECTION ---------- */
     function startElection(electionId) {
       currentElection = elections.find(e => e.id === electionId);
       currentPositionIndex = 0;
@@ -396,6 +565,7 @@
       renderCurrentPosition();
     }
 
+    /* ---------- RENDER CURRENT POSITION ---------- */
     function renderCurrentPosition() {
       const posContainer = document.getElementById("positionBlock");
       posContainer.innerHTML = "";
@@ -420,6 +590,7 @@
       renderCandidates(position.candidates);
     }
 
+    /* ---------- RENDER CANDIDATES ---------- */
     function renderCandidates(candidates) {
       const container = document.getElementById("candidatesContainer");
       container.innerHTML = "";
@@ -436,6 +607,7 @@
       });
     }
 
+    /* ---------- CANDIDATE PANEL ---------- */
     function openCandidatePanel(candidate) {
       selectedCandidate = candidate;
       document.getElementById("candidateImage").src = candidate.image;
@@ -458,6 +630,7 @@
       document.getElementById("candidateOverlay").classList.remove("active");
     }
 
+    /* ---------- VOTE ---------- */
     function voteForCandidate() {
       const position = currentElection.positions[currentPositionIndex];
       position.vote = selectedCandidate;
@@ -480,6 +653,7 @@
       renderCurrentPosition();
     }
 
+    /* ---------- SKIP & EXIT ---------- */
     function skipPosition() {
       currentElection.positions[currentPositionIndex].vote = "Skipped";
       currentPositionIndex++;
@@ -492,6 +666,7 @@
       showView("electionView");
     }
 
+    /* ---------- REVIEW SUMMARY ---------- */
     function renderReviewSummary() {
       const reviewContainer = document.getElementById("reviewSummary");
       reviewContainer.innerHTML = "";
@@ -515,77 +690,6 @@
       currentPositionIndex = 0;
       selectedCandidate = null;
       showView("electionView");
-    }
-
-    /* ===============================
-       Profile Section Functions 
-    =============================== */
-
-    // Simulated unlocked items storage
-    const unlocked = {
-      funFacts: [],
-      accessories: [],
-      trips: []
-    };
-
-    // Reward Types: 'accessory', 'funFact', 'trip'
-    function openRewardPopup() {
-      const popup = document.getElementById("rewardPopup");
-      popup.classList.add("active");
-      const rewards = ['accessory', 'funFact', 'trip'];
-      const rewardType = rewards[Math.floor(Math.random() * rewards.length)];
-      const rewardContent = document.getElementById("rewardContent");
-
-      if (rewardType === 'accessory') {
-        rewardContent.innerHTML = `<h3>New Accessory Unlocked!</h3>
-                                   <p>Your Ecco has been given a stylish hat.</p>`;
-        unlocked.accessories.push("Stylish Hat");
-        updateAccessory("https://via.placeholder.com/80?text=Hat");
-      } else if (rewardType === 'funFact') {
-        rewardContent.innerHTML = `<h3>Fun Fact Unlocked!</h3>
-                                   <p>"Ecco loves spending time outdoors!"</p>`;
-        document.getElementById("funFactDisplay").innerText = "Fun Fact: Ecco loves spending time outdoors!";
-        unlocked.funFacts.push("Ecco loves spending time outdoors!");
-      } else if (rewardType === 'trip') {
-        rewardContent.innerHTML = `<h3>Ecco Went on a Trip!</h3>
-                                   <p>Background updated to a tropical paradise.</p>`;
-        unlocked.trips.push("Tropical Paradise Trip");
-        updateTripBackground("https://via.placeholder.com/1200x800?text=Tropical+Paradise");
-      }
-    }
-
-    function closeRewardPopup() {
-      document.getElementById("rewardPopup").classList.remove("active");
-    }
-
-    document.getElementById("claimRewardBtn").addEventListener("click", openRewardPopup);
-
-    // Tab switching for unlocks menu
-    function showTab(tabName, event) {
-      const tabs = document.querySelectorAll(".menu-content .tab-content");
-      tabs.forEach(tab => tab.classList.remove("active"));
-      document.getElementById("tab" + capitalize(tabName)).classList.add("active");
-      const tabBtns = document.querySelectorAll(".menu-tabs .tab-btn");
-      tabBtns.forEach(btn => btn.classList.remove("active"));
-      event.target.classList.add("active");
-    }
-
-    function capitalize(s) {
-      return s.charAt(0).toUpperCase() + s.slice(1);
-    }
-
-    // Update Ecco's accessory overlay
-    function updateAccessory(accessoryImageURL) {
-      const accessoryOverlay = document.getElementById("accessoryOverlay");
-      accessoryOverlay.src = accessoryImageURL;
-      accessoryOverlay.style.display = "block";
-    }
-
-    // Update the background for trips (simulate a moving background)
-    function updateTripBackground(bgImageURL) {
-      const profileBg = document.getElementById("profileBg");
-      profileBg.style.backgroundImage = `url(${bgImageURL})`;
-      profileBg.classList.add("active");
     }
   </script>
 </body>
