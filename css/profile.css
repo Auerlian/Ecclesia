@@ -147,3 +147,11 @@
     color: #1976d2;
     font-size: 1.05rem;
   }
+
+  .ecco-wrapper {
+    max-height: 300px;
+  }
+
+  .ecco-wrapper svg{
+    height: 300px;
+  }

@@ -68,10 +68,15 @@ const elections = [
     // Additional elections can be added here...
   ];
   
+  // ----------------------------------------------------
   // Global state for voting
+  // ----------------------------------------------------
   let currentElection = null;
   let currentPositionIndex = 0;
   let selectedCandidate = null;
+  
+  // 1) NEW GLOBAL VARIABLE FOR REWARDS
+  let rewardCount = 0;
   
   // Render the election list inside #electionList
   function renderElectionList() {
@@ -110,6 +115,7 @@ const elections = [
   
     posContainer.innerHTML = "";
     if (currentPositionIndex >= currentElection.positions.length) {
+      // All positions voted or skipped -> show review
       renderReviewSummary();
       showView("reviewView");
       return;
@@ -189,6 +195,10 @@ const elections = [
   }
   
   function confirmVote() {
+    // 2) INCREMENT GLOBAL REWARD COUNT WHEN A VOTE IS CONFIRMED
+    rewardCount++;
+  
+    // Show the reward overlay after voting
     document.getElementById("rewardOverlay").classList.add("active");
   }
   
@@ -239,3 +249,15 @@ const elections = [
     selectedCandidate = null;
     showView("electionView");
   }
+  
+  // 3) EXAMPLE: REWARD REDEMPTION (could be put in profile.js or kept here)
+  function redeemReward() {
+    if (rewardCount > 0) {
+      rewardCount--;
+      alert("Reward redeemed! You now have " + rewardCount + " reward(s) left.");
+      // Update any UI element that shows the current reward count, if desired
+    } else {
+      alert("No rewards to redeem!");
+    }
+  }
+  
