@@ -192,3 +192,22 @@
   .button-container {
     text-align: center; 
   }
+
+  .reward-badge {
+    background-color: #ff4c4c;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    min-width: 1.2rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    text-align: center;
+    display: none; /* hide if zero */
+    margin-left: 5px;
+    padding: 0 4px;
+  }
+  
+  #profileBadge{
+    position: absolute;
+    margin-left:40px;
+  }
